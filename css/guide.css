@@ -1,0 +1,28 @@
+.guideBox {
+	
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+}
+
+
+.guideBox li {
+	text-align: justify;
+}
+img{
+	width: 100%;
+	height: auto;
+}
+#img_div{
+	background-color: dodgerblue;
+	color: white;
+}
+#img_div h1{
+	padding-top: 10px;
+		text-align: center;
+
+}
+#linkG{
+	width: 95%;
+	margin: 0 auto;
+}
