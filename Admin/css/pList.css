@@ -1,0 +1,67 @@
+.mainCont {
+	width: 90%;
+	font-size: 12px;
+	margin: 10px auto;
+
+}
+
+.listCont {
+	width: 100%;
+
+}
+
+.listCont table {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.listCont table,
+th,
+tr,
+td {
+	border: 1px solid black;
+	border-collapse: collapse;
+	padding: 5px;
+	text-align: center;
+	width: auto;
+
+}
+
+th {
+	background-color: whitesmoke;
+}
+
+td {
+	vertical-align: text-top;
+}
+
+label {
+	font-size: 40px;
+
+}
+
+a {
+	text-decoration: none;
+}
+
+@media screen and (max-width: 900px) {
+
+	body,
+	table,
+	th,
+	td,
+	tr {
+		font-size: 8px;
+	}
+
+	label {
+		font-size: 18px;
+	}
+
+	img {
+		width: 10px;
+		height: 10px;
+	}
+
+
+}

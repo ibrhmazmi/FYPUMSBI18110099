@@ -1,0 +1,44 @@
+.container {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.container .card {
+	width: 100%;
+}
+
+/**
+ * placeholder-loading v0.5.0
+ * Author: Zalog (https://www.zalog.ro/)
+ * License: MIT
+ **/
+
+
+
+.container .card-header label {
+	font-size: 40px;
+}
+
+.container .card-body .form-group input {
+	text-align: center;
+}
+
+#dynamic_content .table-striped {
+	width: 100%;
+/*	margin-top: 10px;*/
+}
+
+
+#dynamic_content table,
+tr,
+td,
+th {
+	border: 1px solid black;
+	border-collapse: collapse;
+	text-align: left;
+	padding: 5px;
+}
+
+##dynamic_content .pagination {
+	list-style-type: none;
+}

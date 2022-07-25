@@ -1,0 +1,36 @@
+.studPlus {
+	margin: 0 auto;
+	width: 90%;
+	margin-top: 20px;
+
+}
+
+.studPlus label {
+	font-size: 40px;
+}
+
+.studPlus .plusCont {
+	background-color: lightblue;
+}
+
+.studPlus .plusCont table {
+	width: 100%;
+}
+
+.studPlus .plusCont table,
+tr,
+td {
+	/*
+	border: 1px solid black;
+	border-collapse: collapse;
+*/
+	padding: 10px;
+}
+
+#namebox input {
+	width: 100%;
+}
+
+button {
+	width: 100%;
+}

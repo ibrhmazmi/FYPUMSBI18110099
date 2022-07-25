@@ -1,0 +1,36 @@
+input:focus,
+textarea:focus {
+	outline: 1px solid blue;
+}
+
+.ant .butt input {
+	display: inline-block;
+	margin-right: auto;
+}
+
+.ant .title label,
+input {
+	display: inline-block;
+	margin-right: auto;
+}
+
+.ant .des textarea {
+	width: 95%;
+	height: 200px;
+	max-height: 300px;
+	resize: none;
+
+}
+
+.ant {
+	width: 95%;
+	margin: 0 auto;
+	height: auto;
+	min-height: 100%;
+	margin-bottom: 10px;
+
+}
+#butt{
+	margin-left: 10px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}

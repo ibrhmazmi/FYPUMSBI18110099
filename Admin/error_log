@@ -1,0 +1,46 @@
+[17-Nov-2021 08:09:04 UTC] PHP Notice:  Undefined index: lectName in /home2/umskalfy/public_html/fki.fyp.com/Admin/includes/head.php on line 24
+[17-Nov-2021 08:09:04 UTC] PHP Notice:  Undefined index: user in /home2/umskalfy/public_html/fki.fyp.com/Admin/includes/head.php on line 24
+[17-Nov-2021 08:09:06 UTC] PHP Notice:  Undefined index: lectName in /home2/umskalfy/public_html/fki.fyp.com/Admin/includes/head.php on line 24
+[17-Nov-2021 08:09:06 UTC] PHP Notice:  Undefined index: user in /home2/umskalfy/public_html/fki.fyp.com/Admin/includes/head.php on line 24
+[17-Nov-2021 08:09:32 UTC] PHP Notice:  Undefined index: lectName in /home2/umskalfy/public_html/fki.fyp.com/Admin/includes/head.php on line 24
+[17-Nov-2021 08:09:32 UTC] PHP Notice:  Undefined index: user in /home2/umskalfy/public_html/fki.fyp.com/Admin/includes/head.php on line 24
+[17-Nov-2021 08:09:33 UTC] PHP Notice:  Undefined index: lectName in /home2/umskalfy/public_html/fki.fyp.com/Admin/includes/head.php on line 24
+[17-Nov-2021 08:09:33 UTC] PHP Notice:  Undefined index: user in /home2/umskalfy/public_html/fki.fyp.com/Admin/includes/head.php on line 24
+[17-Nov-2021 11:32:50 UTC] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/umskalfy/public_html/fki.fyp.com/Admin/dashboard.php on line 160
+[17-Nov-2021 11:32:50 UTC] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/umskalfy/public_html/fki.fyp.com/Admin/dashboard.php on line 168
+[17-Nov-2021 11:32:51 UTC] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/umskalfy/public_html/fki.fyp.com/Admin/dashboard.php on line 160
+[17-Nov-2021 11:32:51 UTC] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home2/umskalfy/public_html/fki.fyp.com/Admin/dashboard.php on line 168
+[17-Nov-2021 13:45:08 UTC] PHP Notice:  Undefined index: lectName in /home2/umskalfy/public_html/fki.fyp.io/Admin/includes/head.php on line 24
+[17-Nov-2021 13:45:08 UTC] PHP Notice:  Undefined index: user in /home2/umskalfy/public_html/fki.fyp.io/Admin/includes/head.php on line 24
+[18-Nov-2021 04:55:00 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:04 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:05 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:05 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:06 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:06 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:07 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:07 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:08 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:08 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:09 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:14 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:15 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:15 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:16 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:16 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:17 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:17 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:18 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:18 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:19 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:19 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:20 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:20 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:21 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:22 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[18-Nov-2021 04:55:23 UTC] PHP Warning:  mysqli_connect(): (HY000/2002): Connection refused in /home2/umskalfy/public_html/fki.fyp.io/includes/config.php on line 11
+[22-Nov-2021 12:11:13 UTC] PHP Notice:  Undefined index: lectName in /home2/umskalfy/public_html/fki.fyp.io/Admin/includes/head.php on line 24
+[22-Nov-2021 12:11:13 UTC] PHP Notice:  Undefined index: user in /home2/umskalfy/public_html/fki.fyp.io/Admin/includes/head.php on line 24
+[22-Nov-2021 17:14:04 UTC] PHP Notice:  Undefined index: lectName in /home2/umskalfy/public_html/fki.fyp.io/Admin/includes/head.php on line 24
+[22-Nov-2021 17:14:04 UTC] PHP Notice:  Undefined index: user in /home2/umskalfy/public_html/fki.fyp.io/Admin/includes/head.php on line 24
+[24-Nov-2021 16:11:00 UTC] PHP Notice:  Undefined index: page in /home2/umskalfy/public_html/fki.fyp.io/Admin/student_fetch.php on line 19
