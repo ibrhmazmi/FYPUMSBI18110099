@@ -1,0 +1,46 @@
+body {
+	text-transform: uppercase;
+}
+
+.viewMain {
+	width: 100%;
+}
+
+.viewCont {
+	width: 95%;
+	height: auto;
+	margin: 20px auto;
+}
+
+.viewCont label {
+	font-size: 40px;
+}
+
+.viewCont table {
+	width: 100%;
+
+}
+
+#td1 {
+	width: 15%;
+	padding: 5px;
+	vertical-align: text-top;
+}
+
+#title {
+	width: 95%;
+}
+#ap, #apth{
+	text-align: left;
+	border: 1px solid whitesmoke;
+	border-collapse: collapse;
+	padding: 5px;
+	
+}
+#apth{
+	background-color: lightgrey;
+}
+#apLabel {
+	font-size: 20px;
+	margin: 5px;
+}

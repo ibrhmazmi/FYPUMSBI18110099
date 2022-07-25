@@ -1,0 +1,33 @@
+.left-nav {
+	color: black;
+	float: left;
+	width: 15%;
+	height: inherit;
+	background-color: lightgrey;
+	margin-top: 5px;
+
+}
+
+
+.left-nav a {
+	text-decoration: none;
+	color: black;
+	margin-left: 10px;
+	padding-top: 10px;
+	vertical-align: middle;
+}
+
+.left-nav a:hover {
+	color: cornflowerblue;
+}
+
+hr {
+	border: 1px solid #e7e7e7;
+}
+#navicon {
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
+	margin-left: 5px;
+	margin-right: -5px;
+}

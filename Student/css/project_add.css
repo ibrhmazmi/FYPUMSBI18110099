@@ -1,0 +1,49 @@
+.main_form {
+	width: 100%;
+}
+
+.plainB {
+	margin: 10px 10px 10px 10px;
+	margin: 10px auto;
+	width: 90%;
+}
+.plainB label {
+	font-size: 40px;
+}
+
+.box {
+	
+	width: 100%;
+}
+
+.box table {
+	margin-top: 20px;
+	width: 100%;
+/*	font-size: 24px;*/
+}
+
+.box textarea {
+	width: 100%;
+	resize: none;
+	margin-bottom: 10px;
+	min-width: 50%;
+}
+
+.box input {
+	margin: 0 10px 10px 0;
+	text-align: center;
+	width: 50%;
+	;
+
+}
+
+.box input:focus {
+	box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+	border: 0px solid rgba(81, 203, 238, 1);
+}
+
+.box #td {
+	vertical-align: top;
+	width: 15%;
+
+}

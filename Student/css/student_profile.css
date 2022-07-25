@@ -1,0 +1,120 @@
+main_cont {
+	width: 100%;
+
+}
+
+label {
+	margin-left: 10px;
+	font-size: 40px;
+}
+
+#edit_btn {
+	font-size: 12px;
+	margin-left: 10px;
+	text-decoration: none;
+}
+
+
+
+.stud_cont {
+	margin: 10px auto;
+	width: 95%;
+	padding-bottom: 10px;
+
+}
+
+td {
+	margin-top: 10px;
+	vertical-align: text-top;
+}
+
+table {
+	width: 50%;
+	margin-top: 10xp
+}
+
+.bg {
+	width: 100%;
+	background-color: whitesmoke;
+}
+
+#fProf {
+	width: 100%;
+	text-align: ;
+	padding: 10px;
+
+
+}
+
+#input {
+	margin-top: ;
+	width: 350px;
+}
+
+.row1 {
+
+	height: 200px;
+	width: 200px;
+	margin-left: 10px;
+	margin-top: 20px;
+	border: 1px solid white;
+
+}
+
+#up_img {
+	margin: 10px 0 0 10px;
+	text-align: left;
+
+}
+
+#form_btn {
+	margin-top: 10px;
+	margin-left: 30px;
+}
+
+# {
+	width: auto;
+	height: 300px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	/* display: none; <- Crashes Chrome on hover */
+	-webkit-appearance: none;
+	margin: 0;
+	/* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+	-moz-appearance: textfield;
+	/* Firefox */
+}
+
+@media screen and (max-width: 1600px) {}
+
+
+
+/*end css for 13" screen*/
+
+@media screen and (max-width: 600px) {
+	#up_img {
+		margin: 10px auto;
+
+	}
+
+	.row1 {
+		margin: 20px auto;
+	}
+
+	#input {
+		margin-top: 20px;
+		width: 200px;
+	}
+
+	#fProf {
+		width: 95%;
+		text-align: right;
+		padding: 10px;
+	}
+
+}

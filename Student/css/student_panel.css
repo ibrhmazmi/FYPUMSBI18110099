@@ -1,0 +1,58 @@
+body {
+	max-width: 95%;
+	margin: 0 auto;
+	/*set body vertically to middle*/
+	background-color: cadetblue;
+	vertical-align: middle;
+	/*set body vertically to middle*/
+	text-transform: uppercase;
+	box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+	font-size: 125%;
+	font-family: 'Inter';
+}
+textarea{
+	font-size: 105%;
+	text-align: justify;
+}
+
+.main {
+	height: auto;
+	background-color: lightgrey;
+}
+
+.head {
+
+vertical-align: middle;
+	width: 100%;
+	background-color: lightgray;
+	border: 1px solid #e7e7e7;
+	height: 50px;
+	margin: 0 auto 5px auto auto;
+
+}
+
+.head .logo {
+	float: left;
+}
+
+.head .u1 {
+	float: right;
+	margin-right: -55px;
+
+}
+
+
+.head .f-right {
+	float: right;
+	margin: 20px 5px 0 0;
+}
+#butt{
+	box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+	margin-left: 10px;
+}
+@media screen and (max-width: 1600px){
+	body{
+		font-size: 14px;
+	}
+	
+}

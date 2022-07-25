@@ -1,0 +1,53 @@
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+* {
+	box-sizing: border-box;
+}
+.checklist table,td{
+	background-color: lightgrey;
+	width: 93%;
+	padding: 5px;
+	border: 1px solid white;
+	border-collapse: collapse;
+	border-radius: 10px;
+}
+img {
+	width: 20px;
+	height: 20px;
+}
+#list {
+margin-left: 100px;
+}
+
+.progress {
+	background-color: #d8d8d8;
+	border-radius: 20px;
+	position: relative;
+	margin: 15px 0;
+	height: 30px;
+	width: 93%;
+}
+
+.progress-done {
+	
+	
+	border-radius: 20px;
+	color: black;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 0;
+	opacity: 0;
+	transition: 1s ease 0.3s;
+}
+.percent {
+padding: 5px;
+	float: right;
+	color: blue;
+	font-size: 25px;
+	margin-top: -57px;
+    box-shadow: rgba(115, 177, 250, 0.8) 4px 4px, rgba(144, 193, 251, 0.8) 8px 8px, rgba(180, 214, 254, 0.8) 12px 12px, rgba(229, 239, 250, 0.8) 16px 16px;
+    
+}
