@@ -1,0 +1,9 @@
+[17-Nov-2021 08:49:55 UTC] PHP Notice:  Undefined index: lectName in /home2/umskalfy/public_html/fki.fyp.com/Lecturer/includes/head.php on line 24
+[17-Nov-2021 08:49:55 UTC] PHP Notice:  Undefined index: user in /home2/umskalfy/public_html/fki.fyp.com/Lecturer/includes/head.php on line 24
+[17-Nov-2021 08:49:55 UTC] PHP Notice:  Undefined index: role in /home2/umskalfy/public_html/fki.fyp.com/Lecturer/lecturer.php on line 49
+[18-Nov-2021 05:37:34 UTC] PHP Notice:  Undefined index: lectName in /home2/umskalfy/public_html/fki.fyp.io/Lecturer/includes/head.php on line 24
+[18-Nov-2021 05:37:34 UTC] PHP Notice:  Undefined index: user in /home2/umskalfy/public_html/fki.fyp.io/Lecturer/includes/head.php on line 24
+[18-Nov-2021 05:37:34 UTC] PHP Notice:  Undefined index: role in /home2/umskalfy/public_html/fki.fyp.io/Lecturer/lecturer.php on line 49
+[22-Nov-2021 10:00:18 UTC] PHP Notice:  Undefined index: lectName in /home2/umskalfy/public_html/fki.fyp.io/Lecturer/includes/head.php on line 24
+[22-Nov-2021 10:00:18 UTC] PHP Notice:  Undefined index: user in /home2/umskalfy/public_html/fki.fyp.io/Lecturer/includes/head.php on line 24
+[22-Nov-2021 10:00:18 UTC] PHP Notice:  Undefined index: role in /home2/umskalfy/public_html/fki.fyp.io/Lecturer/lecturer.php on line 49
