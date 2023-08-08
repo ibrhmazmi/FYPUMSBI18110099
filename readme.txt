@@ -1,4 +1,4 @@
-URL : https://fki.fyp.umskalfyp2.com
+
 
 default password = matric number 
 
