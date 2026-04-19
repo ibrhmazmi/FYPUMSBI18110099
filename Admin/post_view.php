@@ -60,7 +60,7 @@
 	<div class="pview">
 		<?php
 		include_once ('../includes/config.php');
-		error_reporting(E_ALL ^ E_NOTICE);
+		error_reporting(E_ALL & ~E_NOTICE);
 		?>
 
 		<div class='btn'>
@@ -93,7 +93,7 @@ if (! $view){
 	die ('Could not get Data:'. mysqli_error());
 }
 
-while($row = mysqli_fetch_array($view)){
+while($row = mysqli_fetch_assoc($view)){
 	echo "<tr>
 	<th>".++$x."</th>
 	<td> 

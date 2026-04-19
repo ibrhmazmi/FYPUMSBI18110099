@@ -1,5 +1,5 @@
 <?php include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 
 $id = $_SESSION['user'];
 $title = mysqli_real_escape_string($conn,$_POST['title']);

@@ -76,7 +76,7 @@ if(isset($_POST['submit'])){
 		{
 		die('Could not get data:'.mysqli_error($conn));
 }
-		while ($row = mysqli_fetch_array($edit)){
+		while ($row = mysqli_fetch_assoc($edit)){
 			
 		
 		

@@ -78,7 +78,7 @@ include_once '../includes/config.php';
 					echo "</table><table><td><a style=\"color:red;text-align:center\">NO STUDENT ASSIGNED</a></table>";
 				}else{
 					
-				while ($row= mysqli_fetch_array($sql)){
+				while ($row= mysqli_fetch_assoc($sql)){
 					
 					$pid = $row['Pid'];
 					echo "<tr> 
@@ -95,7 +95,7 @@ include_once '../includes/config.php';
 						die ('Could not fetch data!'.mysqli_error());
 					}
 					
-					while($stName = mysqli_fetch_array($qName)){
+					while($stName = mysqli_fetch_assoc($qName)){
 					
 					echo $stName['studName']."<br>".$row['stud1'];
 						}
@@ -107,7 +107,7 @@ include_once '../includes/config.php';
 						die ('Could not fetch data!'.mysqli_error());
 					}
 					
-					while($stName = mysqli_fetch_array($qName)){
+					while($stName = mysqli_fetch_assoc($qName)){
 					echo	$stName['studName']."<br>".$row['stud2'];
 					}
 					
@@ -118,7 +118,7 @@ include_once '../includes/config.php';
 						die ('Could not fetch data!'.mysqli_error());
 					}
 					
-					while($stName = mysqli_fetch_array($qName)){
+					while($stName = mysqli_fetch_assoc($qName)){
 					echo	$stName['studName']."<br>".$row['stud3'];
 					}
 					//retrieve student names END

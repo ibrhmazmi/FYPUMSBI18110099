@@ -1,6 +1,6 @@
 <?php
 include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 ?>
 <!DOCTYPE html>
 <html lang="en">

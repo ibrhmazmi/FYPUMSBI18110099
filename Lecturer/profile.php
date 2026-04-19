@@ -63,7 +63,7 @@ if (!$view){
 			<div class="sTbl">
 				<table>
 					<?php
-					while ($row = mysqli_fetch_array($view)){
+					while ($row = mysqli_fetch_assoc($view)){
 						
 					?>
 					<tr>

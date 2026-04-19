@@ -56,7 +56,7 @@ if (isset($_POST['submit']))
 							{
 							die ('Could not get Data:'. mysqli_error());
 							}
-								while ($row = mysqli_fetch_array($sql))
+								while ($row = mysqli_fetch_assoc($sql))
 								{
 									echo "<option value=\"{$row['CourseCode']} \">
 									{$row['CourseCode']}</option>";

@@ -1,47 +1,55 @@
 <?php include_once 'includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE); 
-$noty = $_SESSION['noty'];
-$email = $_SESSION['email'];
+error_reporting(E_ALL & ~E_NOTICE);
 
-if(isset($_POST['reset']))
-{
-	$pass1 = $_POST['pass'];
-	$pass2 = $_POST['confirm_pass'];
-	
-	if ($pass1 !== $pass2)
-	{
+$noty = isset($_SESSION['noty']) ? $_SESSION['noty'] : '';
+$email = isset($_SESSION['email']) ? trim((string) $_SESSION['email']) : '';
+
+if ($email === '') {
+	header('Location: forgot.php');
+	exit;
+}
+
+if (isset($_POST['reset'])) {
+	$pass1 = isset($_POST['pass']) ? (string) $_POST['pass'] : '';
+	$pass2 = isset($_POST['confirm_pass']) ? (string) $_POST['confirm_pass'] : '';
+
+	if ($pass1 !== $pass2) {
 		$noty = "<style>.alert{background-color:indianred;color:white;} </style>Confirmed Password not matched";
-	}
-	else
-	{
-		$sql ="Select *
-FROM
-(SELECT studEmail,studID,code FROM student 
-UNION 
-SELECT lectEmail,lectID,code FROM lecturer) as A
-where A.studEmail = '$email'";
-		$result = mysqli_query($conn,$sql);
-		$row = mysqli_fetch_array($result);
-		$id = $row['studID'];
-		if(mysqli_num_rows($result) >0)
-		{
-			$up = "Update users SET password = '$pass1' 
-			where iduser = '$id'";
-			$run = mysqli_query($conn,$up);
-			if($run)
-			{
-				header('Location: Index.php');
+	} else {
+		$stmt = mysqli_prepare(
+			$conn,
+			'SELECT studID AS uid FROM student WHERE studEmail = ?
+			 UNION ALL
+			 SELECT lectID AS uid FROM lecturer WHERE lectEmail = ?
+			 LIMIT 1'
+		);
+		$id = null;
+		if ($stmt) {
+			mysqli_stmt_bind_param($stmt, 'ss', $email, $email);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $uid);
+			if (mysqli_stmt_fetch($stmt)) {
+				$id = $uid;
 			}
-			else
-			{
-				$noty = "Failed to change your password";
+			mysqli_stmt_close($stmt);
+		}
+
+		if ($id !== null && $id !== '') {
+			$up = mysqli_prepare($conn, 'UPDATE users SET password = ? WHERE iduser = ?');
+			if ($up) {
+				mysqli_stmt_bind_param($up, 'ss', $pass1, $id);
+				$run = mysqli_stmt_execute($up);
+				mysqli_stmt_close($up);
+				if ($run) {
+					unset($_SESSION['email'], $_SESSION['noty'], $_SESSION['info']);
+					header('Location: Index.php');
+					exit;
+				}
 			}
+			$noty = 'Failed to change your password';
+		} else {
+			$noty = 'ERROR when fetch data';
 		}
-		else
-		{
-			$noty = "ERROR when fetch data";
-		}
-		
 	}
 }
 ?>

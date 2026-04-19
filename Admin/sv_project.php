@@ -1,6 +1,6 @@
 <?php
 include_once ('../includes/config.php'); 
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +82,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 				<?php 
 				$sql = mysqli_query($conn,"Select * from svproject where status != 'Done' order by id");
 					$x = 0;
-				while($result = mysqli_fetch_array($sql)){
+				while($result = mysqli_fetch_assoc($sql)){
 				if(empty($result)){
 					echo "</table><th>No New Applicant</th>";
 				}else{
@@ -92,7 +92,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 					<td><?php $svid = $result['svid'];
 						$sql2 = mysqli_query($conn,"Select * from lecturer where lectID = '$svid'");
-					$d = mysqli_fetch_array($sql2);
+					$d = mysqli_fetch_assoc($sql2);
 						echo $d['lectName'];
 						?></td>
 					<td><?php echo $result['title'] ?></td>

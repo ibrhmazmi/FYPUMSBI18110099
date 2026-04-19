@@ -78,7 +78,7 @@
 						die ('Could not get Data:'. mysqli_error());
 					}
 				
-					while ($row = mysqli_fetch_array($sql))
+					while ($row = mysqli_fetch_assoc($sql))
 					{
 						$id = $row['courseID'];
 					echo "<tr>

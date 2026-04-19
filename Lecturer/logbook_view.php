@@ -1,12 +1,13 @@
 <?php
 include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE); 
-$id = $_GET['id'];
+error_reporting(E_ALL & ~E_NOTICE); 
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+if ($id <= 0) {
+	exit('Invalid request');
+}
 
-
-
-$sql1 = mysqli_query($conn,"SELECT * from project where Pid ='$id'");
-$row = mysqli_fetch_array($sql1);
+$sql1 = mysqli_query($conn, 'SELECT * FROM project WHERE Pid = ' . $id);
+$row = mysqli_fetch_assoc($sql1);
 
 ?>
 <!DOCTYPE html>
@@ -81,7 +82,7 @@ $row = mysqli_fetch_array($sql1);
 				}
 				else
 				{
-					while($data = mysqli_fetch_array($sql)){
+					while($data = mysqli_fetch_assoc($sql)){
 						
 					
 					echo "<tr>";
@@ -93,13 +94,13 @@ $row = mysqli_fetch_array($sql1);
 						//check last update by who?
 						$uID = $data['byWho'];
 						$stu = mysqli_query($conn,"SELECT * FROM student  where studID = '$uID'  ");
-						$g = mysqli_fetch_array($stu);
+						$g = mysqli_fetch_assoc($stu);
 						if($uID == $g['studID']){
 					echo "<td>".$g['studName']."</td>";
 							}
 						else{
 							$svu = mysqli_query($conn,"SELECT * FROM lecturer  where lectID = '$uID'  ");
-						$g1 = mysqli_fetch_array($svu);
+						$g1 = mysqli_fetch_assoc($svu);
 							echo "<td>".$g1['lectName']."</td>";
 						}
 						//check status 

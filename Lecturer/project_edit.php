@@ -1,8 +1,11 @@
 <?php include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
-$pid = $_GET['id'];
-$sql = mysqli_query($conn,"Select * from svproject where id = '$pid'");
-$row = mysqli_fetch_array($sql);
+error_reporting(E_ALL & ~E_NOTICE);
+$pid = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+if ($pid <= 0) {
+	exit('Invalid request');
+}
+$sql = mysqli_query($conn, 'SELECT * FROM svproject WHERE id = ' . $pid);
+$row = mysqli_fetch_assoc($sql);
 
 if(isset($_POST['update'])){
 	$title = mysqli_real_escape_string($conn,$_POST['title']);
@@ -11,7 +14,7 @@ if(isset($_POST['update'])){
 	$req = mysqli_real_escape_string($conn,$_POST['req']);
 
 	$up = mysqli_query($conn,"Update svproject SET title = '$title', description = '$desc' , type = '$type', requirement = '$req'
-	WHERE id = '$pid' ");
+	WHERE id = " . $pid);
 	if($up)
     {
         mysqli_close($conn); // Close connection

@@ -8,10 +8,10 @@ include_once('../includes/config.php');
   	
 	$image_text = mysqli_real_escape_string($conn, $_POST['text']);
 	  
-  	$image = $_FILES['image']['name'];
+  	$image = (string) ($_FILES['image']['name'] ?? '');
   	$imgtarget = "upload/img/".basename($image);
 	  
-	  $file = $_FILES['file']['name'];
+	  $file = (string) ($_FILES['file']['name'] ?? '');
 	  $filetarget = "upload/file/".basename($file);
 	  $filePath = $filetarget . $file;
 	  $fileType = pathinfo($filePath,PATHINFO_EXTENSION);

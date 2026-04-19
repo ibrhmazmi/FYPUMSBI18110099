@@ -2,7 +2,7 @@
 include_once 'config.php';
 $sql = "SELECT * FROM footer";
 $view = mysqli_query($conn,$sql);
-while ($row = mysqli_fetch_array($view)){
+while ($row = mysqli_fetch_assoc($view)){
 	
 
 ?>

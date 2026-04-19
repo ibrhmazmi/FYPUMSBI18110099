@@ -1,7 +1,7 @@
 <?php include_once 'config.php';
 //include "config.php";
 	
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -165,7 +165,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 	echo "<td>{$Pdesc}</td>";
 	echo "<td>{$Ptype}</td>";
 	$sqsv = mysqli_query($conn,"Select lectName from lecturer where lectID = '$Psvid' ");
-	$data = mysqli_fetch_array($sqsv);
+	$data = mysqli_fetch_assoc($sqsv);
 	echo "<td>{$data['lectName']}</td></tr>";
 					}
 				} ?>

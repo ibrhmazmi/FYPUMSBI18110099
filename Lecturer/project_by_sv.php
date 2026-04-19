@@ -1,8 +1,8 @@
 <?php include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 $id = $_SESSION['user'];
 $sqlC = mysqli_query($conn,"Select * from lecturer where lectID = '$id'");
-$d = mysqli_fetch_array($sqlC);
+$d = mysqli_fetch_assoc($sqlC);
 $loadStat = $d['workload_status'];
 ?>
 <!DOCTYPE html>
@@ -144,7 +144,7 @@ $loadStat = $d['workload_status'];
 						echo "</table><a style=\"color:red\">No Personal Project Requested.</a>";
 					}else{
 					
-					while($row = mysqli_fetch_array($sql)){
+					while($row = mysqli_fetch_assoc($sql)){
 						$pid = $row['id'];
 					
 					?>

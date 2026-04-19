@@ -1,6 +1,6 @@
 <?php
 include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE); 
+error_reporting(E_ALL & ~E_NOTICE); 
 $id = $_SESSION['user'];
 ?>
 <!DOCTYPE html>
@@ -71,28 +71,28 @@ $id = $_SESSION['user'];
 					if(empty($kira)){
 						echo "</table><table><td><a style=\"color:red\">NO STUDENT ASSIGNED</a></td></table>";
 					}else{
-						while($d = mysqli_fetch_array($sql)){
+						while($d = mysqli_fetch_assoc($sql)){
 							
-							//declare path to download Word file from
-					$proWord = $d['proposalFileWord'];
+							//declare path to download Word file from (basename() requires string in PHP 8.1+)
+					$proWord = (string) ($d['proposalFileWord'] ?? '');
 					$proTarget = "../Student/upload/student_file/proposal/".basename($proWord);
-					$R1Word = $d['fyp1FileWord'];
+					$R1Word = (string) ($d['fyp1FileWord'] ?? '');
 					$R1WordTarget = "../Student/upload/student_file/fyp1/".basename($R1Word);
-					$R2Word = $d['fyp2FileWord'];
+					$R2Word = (string) ($d['fyp2FileWord'] ?? '');
 					$R2WordTarget = "../Student/upload/student_file/fyp2/".basename($R2Word);
 					
 					//declare path to download PDF file from
-					$R1PDF = $d['fyp1FilePDF'];
+					$R1PDF = (string) ($d['fyp1FilePDF'] ?? '');
 					$R1PDFTarget = "../Student/upload/student_file/fyp1/".basename($R1PDF);
-					$R2PDF = $d['fyp2FilePDF'];
+					$R2PDF = (string) ($d['fyp2FilePDF'] ?? '');
 					$R2PDFTarget = "../Student/upload/student_file/fyp2/".basename($R2PDF);
 							
 					//declare path to download poster 
-					$poster = $d['poster'];
+					$poster = (string) ($d['poster'] ?? '');
 					$posterTar = "../Student/upload/student_file/poster/".basename($poster);
 							
 					//declare path to download source_file
-					$source = $d['source_file'];
+					$source = (string) ($d['source_file'] ?? '');
 					$sourceTar = "../Student/upload/student_file/source/".basename($source);
 						
 						echo "<tr>
@@ -102,21 +102,21 @@ $id = $_SESSION['user'];
 							$stid2 = $d['stud2'];
 							$stid3 = $d['stud3'];
 							$check = mysqli_query($conn,"SELECT studName from student where studID ='$stid1' ");
-							$s = mysqli_fetch_array($check);
-						echo "<td>1. ".$s['studName']."<br>".$stid1;
+							$s = mysqli_fetch_assoc($check) ?: [];
+						echo "<td>1. ".htmlspecialchars((string)($s['studName'] ?? ''), ENT_QUOTES, 'UTF-8')."<br>".htmlspecialchars((string)$stid1, ENT_QUOTES, 'UTF-8');
 							if(empty($stid2)){
 								
 							}else{
 								$check = mysqli_query($conn,"SELECT studName from student where studID ='$stid2' ");
-							$s = mysqli_fetch_array($check);
-								echo "<br>2. ".$s['studName']."<br>".$stid2;
+							$s = mysqli_fetch_assoc($check) ?: [];
+								echo "<br>2. ".htmlspecialchars((string)($s['studName'] ?? ''), ENT_QUOTES, 'UTF-8')."<br>".htmlspecialchars((string)$stid2, ENT_QUOTES, 'UTF-8');
 							}
 							if(empty($stid3)){
 								
 							}else{
 								$check = mysqli_query($conn,"SELECT studName from student where studID ='$stid3' ");
-							$s = mysqli_fetch_array($check);
-								echo "<br>3. ".$s['studName']."<br>".$stid3;
+							$s = mysqli_fetch_assoc($check) ?: [];
+								echo "<br>3. ".htmlspecialchars((string)($s['studName'] ?? ''), ENT_QUOTES, 'UTF-8')."<br>".htmlspecialchars((string)$stid3, ENT_QUOTES, 'UTF-8');
 							}
 					?>
 				<td id="cent"><?php if(!$d['proposalFileWord']){

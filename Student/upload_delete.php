@@ -1,86 +1,52 @@
 <?php
 
-include_once ('../includes/config.php'); // Using database connection file here
-error_reporting(E_ALL ^ E_NOTICE);
+include_once ('../includes/config.php');
+error_reporting(E_ALL & ~E_NOTICE);
 
-$id = $_GET['id'];
-$d1 = $_GET['propoFile'];
-$d2 = $_GET['fyp1PDF'];
-$d3 = $_GET['fyp1Word'];
-$d4 = $_GET['fyp2PDF'];
-$d5 = $_GET['fyp2Word'];
-$d6 =$_GET['poster'];
-$d7 = $_GET['source_file'];
-	// get id through query string
+if (!isset($_SESSION['user']) || !isStudent()) {
+	header('Location: Student.php?view=upload');
+	exit;
+}
 
-// delete query
-$del1 = mysqli_query($conn,"
-UPDATE project set proposalFileWord = null 
-	WHERE proposalFileWord='$d1' AND stud1 = '$id' or stud2 = '$id' or stud3 = '$id'   "); 
-$del2 = mysqli_query($conn,"
-UPDATE project set fyp1FilePDF = null 
-WHERE fyp1FilePDF='$d2' AND stud1 = '$id' or stud2 = '$id' or stud3 = '$id'   "); 
-$del3 = mysqli_query($conn,"
-UPDATE project set fyp1FileWord = null 
-	WHERE fyp1FileWord='$d3' AND stud1 = '$id' or stud2 = '$id' or stud3 = '$id'   "); 
-$del4 = mysqli_query($conn," 
-UPDATE project set fyp2FilePDF = null 
-	WHERE fyp2FilePDF='$d4' AND stud1 = '$id' or stud2 = '$id' or stud3 = '$id'  "); 
-$del5 = mysqli_query($conn,"
-UPDATE project set fyp2FileWord = null 
-	WHERE fyp2FileWord='$d5' AND stud1 = '$id' or stud2 = '$id' or stud3 = '$id' "); 
-$del6 = mysqli_query($conn,"
-UPDATE project set poster = null 
-	WHERE poster='$d6' AND stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ");
-$del7 = mysqli_query($conn,"
-UPDATE project set source_file = null 
-	WHERE source_file='$d7' AND stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ");
+$id = mysqli_real_escape_string($conn, (string) $_SESSION['user']);
+$own = " (stud1 = '$id' OR stud2 = '$id' OR stud3 = '$id') ";
 
+$q = null;
+if (isset($_GET['propoFile']) && (string) $_GET['propoFile'] !== '') {
+	$f = mysqli_real_escape_string($conn, (string) $_GET['propoFile']);
+	$q = "UPDATE project SET proposalFileWord = NULL WHERE proposalFileWord = '$f' AND $own";
+} elseif (isset($_GET['fyp1PDF']) && (string) $_GET['fyp1PDF'] !== '') {
+	$f = mysqli_real_escape_string($conn, (string) $_GET['fyp1PDF']);
+	$q = "UPDATE project SET fyp1FilePDF = NULL WHERE fyp1FilePDF = '$f' AND $own";
+} elseif (isset($_GET['fyp1Word']) && (string) $_GET['fyp1Word'] !== '') {
+	$f = mysqli_real_escape_string($conn, (string) $_GET['fyp1Word']);
+	$q = "UPDATE project SET fyp1FileWord = NULL WHERE fyp1FileWord = '$f' AND $own";
+} elseif (isset($_GET['fyp2PDF']) && (string) $_GET['fyp2PDF'] !== '') {
+	$f = mysqli_real_escape_string($conn, (string) $_GET['fyp2PDF']);
+	$q = "UPDATE project SET fyp2FilePDF = NULL WHERE fyp2FilePDF = '$f' AND $own";
+} elseif (isset($_GET['fyp2Word']) && (string) $_GET['fyp2Word'] !== '') {
+	$f = mysqli_real_escape_string($conn, (string) $_GET['fyp2Word']);
+	$q = "UPDATE project SET fyp2FileWord = NULL WHERE fyp2FileWord = '$f' AND $own";
+} elseif (isset($_GET['poster']) && (string) $_GET['poster'] !== '') {
+	$f = mysqli_real_escape_string($conn, (string) $_GET['poster']);
+	$q = "UPDATE project SET poster = NULL WHERE poster = '$f' AND $own";
+} elseif (isset($_GET['source_file']) && (string) $_GET['source_file'] !== '') {
+	$f = mysqli_real_escape_string($conn, (string) $_GET['source_file']);
+	$q = "UPDATE project SET source_file = NULL WHERE source_file = '$f' AND $own";
+}
 
-if($del1)
-{
-    mysqli_close($conn); // Close connection
-    header("location:Student.php?view=upload"); // redirects to admin page
-    exit;	
+if ($q === null) {
+	$_SESSION['msg'] = 'Invalid delete request';
+	header('Location: Student.php?view=upload');
+	exit;
 }
-else if($del2)
-{
-    mysqli_close($conn); // Close connection
-    header("location:Student.php?view=upload"); // redirects to admin page
-    exit;	
+
+$del = mysqli_query($conn, $q);
+if ($del) {
+	header('Location: Student.php?view=upload');
+	exit;
 }
-else if($del3)
-{
-    mysqli_close($conn); // Close connection
-    header("location:Student.php?view=upload"); // redirects to admin page
-    exit;	
-}else if($del4)
-{
-    mysqli_close($conn); // Close connection
-    header("location:Student.php?view=upload"); // redirects to admin page
-    exit;	
-}else if($del5)
-{
-    mysqli_close($conn); // Close connection
-    header("location:Student.php?view=upload"); // redirects to admin page
-    exit;	
-}
-else if($del6)
-{
-    mysqli_close($conn); // Close connection
-    header("location:Student.php?view=upload"); // redirects to admin page
-    exit;	
-}
-else if($del7)
-{
-    mysqli_close($conn); // Close connection
-    header("location:Student.php?view=upload"); // redirects to admin page
-    exit;	
-}
-else 
-{
-    $msg =  "Error deleting record";
-	$_SESSION['msg'] = $msg;
-	// display error message if not delete
-}
-?>
+
+$_SESSION['msg'] = 'Error deleting record';
+header('Location: Student.php?view=upload');
+exit;

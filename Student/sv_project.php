@@ -1,9 +1,9 @@
 <?php include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 $btn = "Apply";
 $PostID = $_SESSION['PostID'];
 $sql = mysqli_query($conn,"Select * from svproject where id = '$PostID'");
-$data = mysqli_fetch_array($sql);
+$data = mysqli_fetch_assoc($sql);
 $id = $_SESSION['user'];
 
 $checkProject = mysqli_query($conn,"Select * from project where stud1 ='$id' or stud2 ='$id' or stud2 ='$id' ");
@@ -11,7 +11,7 @@ $checkProject = mysqli_query($conn,"Select * from project where stud1 ='$id' or 
 $checkApplicant = mysqli_query($conn,"Select * from application where svProjectID = '$PostID' and studID = '$id'");
 
 $checkMaxSlot = mysqli_query($conn,"Select total_applicant from svproject where id = '$PostID'");
-$d = mysqli_fetch_array($checkMaxSlot);
+$d = mysqli_fetch_assoc($checkMaxSlot);
 $checkMax = $d['total_applicant'];
 $checkCurSlot = mysqli_query($conn,"Select * from application where svProjectID = '$PostID'");
 
@@ -80,7 +80,7 @@ if(isset($_POST['apply'])){
 				<?php 
 					$svid = $data['svid'];
 					$sql2 = mysqli_query($conn,"Select lectName from lecturer where lectID = '$svid'");
-					$show = mysqli_fetch_array($sql2);
+					$show = mysqli_fetch_assoc($sql2);
 					?>
 				<tr>
 					<th>Potential Supervisor Name :</th>

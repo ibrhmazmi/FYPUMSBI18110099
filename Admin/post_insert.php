@@ -2,7 +2,7 @@
 
 
 include_once ('../includes/config.php');
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 date_default_timezone_set('Asia/Kuala_Lumpur'); // set time zone UTC+08:00
 
 $title =mysqli_real_escape_string($conn,$_POST['title']);

@@ -1,13 +1,13 @@
 <?php
 include_once ('../includes/config.php');
 
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 
 $msg = "";
 
 if(isset($_POST['save'])){
 	
-	$image = $_FILES['image']['name'];
+	$image = (string) ($_FILES['image']['name'] ?? '');
 	$id = $_SESSION['user'];
 	$name = $_POST['name'];
 	$contactno = $_POST['contactno'];
@@ -70,7 +70,7 @@ if (! $prof){
 
 <body>
 
-	<?php while($udata = mysqli_fetch_array($prof)){
+	<?php while($udata = mysqli_fetch_assoc($prof)){
 	
 	?>
 

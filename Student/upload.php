@@ -1,31 +1,40 @@
 <?php
 include_once "../includes/config.php";
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 $msg = "";
 $msg = $_SESSION['msg'];
 
 if(isset($_POST['submit'])){
 //	declare
 	$id = $_SESSION['user'];
-	//proposal
-	$proWord = $_FILES['propWord']['name'];
-	$proWordTarget = "upload/student_file/proposal/".basename($proWord);
+	$idEsc = mysqli_real_escape_string($conn, (string) $id);
+	$whereOwn = "WHERE (stud1 = '$idEsc' OR stud2 = '$idEsc' OR stud3 = '$idEsc')";
+	//proposal (basename() requires string in PHP 8.1+)
+	$proWord = basename((string) ($_FILES['propWord']['name'] ?? ''));
+	$proWordTarget = "upload/student_file/proposal/".$proWord;
+	$proWordEsc = mysqli_real_escape_string($conn, $proWord);
 	//fyp1
-	$R1PDF = $_FILES['R1PDF']['name'];
-	$R1PDFTarget = "upload/student_file/fyp1/".basename($R1PDF);
-	$R1Word = $_FILES['R1Word']['name'];
-	$R1WordTarget = "upload/student_file/fyp1/".basename($R1Word);
+	$R1PDF = basename((string) ($_FILES['R1PDF']['name'] ?? ''));
+	$R1PDFTarget = "upload/student_file/fyp1/".$R1PDF;
+	$R1PDFEsc = mysqli_real_escape_string($conn, $R1PDF);
+	$R1Word = basename((string) ($_FILES['R1Word']['name'] ?? ''));
+	$R1WordTarget = "upload/student_file/fyp1/".$R1Word;
+	$R1WordEsc = mysqli_real_escape_string($conn, $R1Word);
 	//fyp2
-	$R2PDF = $_FILES['R2PDF']['name'];
-	$R2PDFTarget = "upload/student_file/fyp2/".basename($R2PDF);
-	$R2Word = $_FILES['R2Word']['name'];
-	$R2WordTarget = "upload/student_file/fyp2/".basename($R2Word);
+	$R2PDF = basename((string) ($_FILES['R2PDF']['name'] ?? ''));
+	$R2PDFTarget = "upload/student_file/fyp2/".$R2PDF;
+	$R2PDFEsc = mysqli_real_escape_string($conn, $R2PDF);
+	$R2Word = basename((string) ($_FILES['R2Word']['name'] ?? ''));
+	$R2WordTarget = "upload/student_file/fyp2/".$R2Word;
+	$R2WordEsc = mysqli_real_escape_string($conn, $R2Word);
 	//poster
-	$poster = $_FILES['poster']['name'];
-	$posterTar = "upload/student_file/poster/".basename($poster);
+	$poster = basename((string) ($_FILES['poster']['name'] ?? ''));
+	$posterTar = "upload/student_file/poster/".$poster;
+	$posterEsc = mysqli_real_escape_string($conn, $poster);
 	//source_file
-	$source = $_FILES['source']['name'];
-	$sourceTar = "upload/student_file/source/".basename($source);
+	$source = basename((string) ($_FILES['source']['name'] ?? ''));
+	$sourceTar = "upload/student_file/source/".$source;
+	$sourceEsc = mysqli_real_escape_string($conn, $source);
 	
 //	query
 //	if proposal not empty, then upload
@@ -33,9 +42,9 @@ if (!empty($_FILES['propWord']['name']))
 {
 	$sql = "UPDATE  project 
 	SET 
-	proposalFileWord = '$proWord',
-	LastUpdateBy = '$id'
-	WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+	proposalFileWord = '$proWordEsc',
+	LastUpdateBy = '$idEsc'
+	$whereOwn ";
 	mysqli_query($conn, $sql);
 }
 	//check if fyp1 report word & pdf not empty, then upload
@@ -43,10 +52,10 @@ if (!empty($_FILES['propWord']['name']))
 {
 	$sql = "UPDATE  project 
 	SET 
-	fyp1FileWord = '$R1Word',
-	fyp1FilePDF = '$R1PDF',
-	LastUpdateBy = '$id'
-	WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+	fyp1FileWord = '$R1WordEsc',
+	fyp1FilePDF = '$R1PDFEsc',
+	LastUpdateBy = '$idEsc'
+	$whereOwn ";
 	mysqli_query($conn, $sql);
 }
 	//check if fyp2 report word & pdf not empty, then upload both
@@ -54,10 +63,10 @@ if (!empty($_FILES['propWord']['name']))
 {
 	$sql = "UPDATE  project 
 	SET 
-	fyp2FileWord = '$R2Word',
-	fyp2FilePDF = '$R2PDF',
-	LastUpdateBy = '$id'
-	WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+	fyp2FileWord = '$R2WordEsc',
+	fyp2FilePDF = '$R2PDFEsc',
+	LastUpdateBy = '$idEsc'
+	$whereOwn ";
 	mysqli_query($conn, $sql);
 }
 	// check if only fyp1 report pdf not empty, then upload
@@ -65,9 +74,9 @@ if (!empty($_FILES['propWord']['name']))
 {
 	$sql = "UPDATE  project 
 	SET 
-	fyp1FilePDF = '$R1PDF',
-	LastUpdateBy = '$id'
-	WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+	fyp1FilePDF = '$R1PDFEsc',
+	LastUpdateBy = '$idEsc'
+	$whereOwn ";
 	mysqli_query($conn, $sql);
 }
 	// check if only fyp1 report Word not empty, then upload
@@ -75,9 +84,9 @@ else if (!empty($_FILES['R1Word']['name']))
 {
 $sql = "UPDATE  project 
 	SET 
-	fyp1FileWord = '$R1Word',
-	LastUpdateBy = '$id'
-	WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+	fyp1FileWord = '$R1WordEsc',
+	LastUpdateBy = '$idEsc'
+	$whereOwn ";
 	mysqli_query($conn, $sql);
 }
 	// check if only fyp2 report pdf not empty, then upload
@@ -85,9 +94,9 @@ $sql = "UPDATE  project
 {
 	$sql = "UPDATE  project 
 	SET 
-	fyp2FilePDF = '$R2PDF',
-	LastUpdateBy = '$id'
-	WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+	fyp2FilePDF = '$R2PDFEsc',
+	LastUpdateBy = '$idEsc'
+	$whereOwn ";
 	mysqli_query($conn, $sql);
 }
 		// check if only fyp2 report Word not empty, then upload
@@ -95,9 +104,9 @@ $sql = "UPDATE  project
 {
 $sql = "UPDATE  project 
 	SET 
-	fyp2FileWord = '$R2Word',
-	LastUpdateBy = '$id'
-	WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+	fyp2FileWord = '$R2WordEsc',
+	LastUpdateBy = '$idEsc'
+	$whereOwn ";
 	mysqli_query($conn, $sql);
 }
 	//check if poster and source_file not empty, then upload
@@ -105,10 +114,10 @@ else if (!empty($_FILES['poster']['name']) && !empty($_FILES['source']['name']) 
 {
 	$sql = "UPDATE  project 
 	SET 
-	poster = '$poster',
-	source_file = '$source',
-	LastUpdateBy = '$id'
-	WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+	poster = '$posterEsc',
+	source_file = '$sourceEsc',
+	LastUpdateBy = '$idEsc'
+	$whereOwn ";
 	mysqli_query($conn, $sql);
 }
 	//check if only poster is not empty, then upload
@@ -116,9 +125,9 @@ else if (!empty($_FILES['poster']['name']) && !empty($_FILES['source']['name']) 
 {
 	$sql = "UPDATE  project 
 	SET 
-	poster = '$poster',
-	LastUpdateBy = '$id'
-	WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+	poster = '$posterEsc',
+	LastUpdateBy = '$idEsc'
+	$whereOwn ";
 	mysqli_query($conn, $sql);
 }
 	//check if source_file is not empty, then upload
@@ -126,9 +135,9 @@ else if (!empty($_FILES['poster']['name']) && !empty($_FILES['source']['name']) 
 {
 	$sql = "UPDATE  project 
 	SET 
-	source_file = '$source',
-	LastUpdateBy = '$id'
-	WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+	source_file = '$sourceEsc',
+	LastUpdateBy = '$idEsc'
+	$whereOwn ";
 	mysqli_query($conn, $sql);
 }else{
 		$msg = "ERROR when uploading file";
@@ -200,10 +209,12 @@ else if (!empty($_FILES['poster']['name']) && !empty($_FILES['source']['name']) 
 	}
 
 $id = $_SESSION['user'];
+$idPageEsc = mysqli_real_escape_string($conn, (string) $id);
+$wherePage = "WHERE (stud1 = '$idPageEsc' OR stud2 = '$idPageEsc' OR stud3 = '$idPageEsc')";
 
 $viewprof = "SELECT * 
 FROM project
-WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+$wherePage ";
 $up = mysqli_query($conn,$viewprof);
 $kira = mysqli_num_rows($up);
 if (! $up){
@@ -229,7 +240,7 @@ if (! $up){
 	    echo "<a style=\"color:red\">NO PROJECT YET. Please start your project!</a>";
 	}
 	else{
-	    while($row = mysqli_fetch_array($up)){
+	    while($row = mysqli_fetch_assoc($up)){
 		
 	?>
 		</div>
@@ -244,13 +255,13 @@ if (! $up){
 						<?php
 						$viewprof = "SELECT * 
 FROM project
-WHERE stud1 = '$id' or stud2 = '$id' or stud3 = '$id' ";
+$wherePage ";
 $check1 = mysqli_query($conn,$viewprof);
-if (! $up){
+if (! $check1){
 	die('Could not get data:'.mysqli_error($conn));
 }
-		$data = mysqli_fetch_array($check1);
-		$sql= mysqli_query($conn,"select * from project where stud1 = '$id' or stud2 = '$id' or stud3 = '$id' and proposalFileWord != NULL ");
+		$data = mysqli_fetch_assoc($check1);
+		$sql= mysqli_query($conn,"SELECT * FROM project $wherePage AND proposalFileWord IS NOT NULL ");
 		$kira2 = mysqli_num_rows($sql);
 		if ($kira2 == 0){
 			echo "<td>Please Upload Your Proposal</td>";

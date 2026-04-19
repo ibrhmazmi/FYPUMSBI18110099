@@ -1,5 +1,10 @@
 <?php
 
+$sStudDp = htmlspecialchars((string) ($_SESSION['studDP'] ?? ''), ENT_QUOTES, 'UTF-8');
+$sType = htmlspecialchars((string) ($_SESSION['type'] ?? ''), ENT_QUOTES, 'UTF-8');
+$sYear = htmlspecialchars((string) ($_SESSION['year'] ?? ''), ENT_QUOTES, 'UTF-8');
+$sStudName = htmlspecialchars((string) ($_SESSION['studName'] ?? ''), ENT_QUOTES, 'UTF-8');
+$sUser = htmlspecialchars((string) ($_SESSION['user'] ?? ''), ENT_QUOTES, 'UTF-8');
 
 if(isset($_POST['but_logout'])){
     session_destroy();
@@ -23,22 +28,22 @@ if(isset($_POST['but_logout'])){
 
 		<div class="dropdown">
 
-			<?php if (!$_SESSION['studDP']){
+			<?php if ($sStudDp === ''){
 	echo "<img style=\"width: 40px;
 	height: 40px;\" 
 	class=\"dropbtn\" src=\"upload/student_img/dp.png\" >";
 }else{ ?>
 			<img class="dropbtn" style="width: 40px;
-	height: 40px; margin-top:5px;" src="upload/student_img/<?php echo $_SESSION['studDP'] ?>">
+	height: 40px; margin-top:5px;" src="upload/student_img/<?php echo $sStudDp ?>">
 			<?php } ?>
 			<div class="dropdown-content">
 				<a>
-					<?php echo $_SESSION['type']."<hr>".$_SESSION['year']."<hr>" ?>
+					<?php echo $sType."<hr>".$sYear."<hr>" ?>
 					<?php 
-				echo $_SESSION['studName']; ?>
+				echo $sStudName; ?>
 					<hr>
 					<b>
-						<?php echo $_SESSION['user']; ?>
+						<?php echo $sUser; ?>
 					</b>
 					<hr>
 				</a>

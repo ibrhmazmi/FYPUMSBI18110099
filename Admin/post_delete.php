@@ -1,10 +1,14 @@
 <?php
 
 include_once ('../includes/config.php'); // Using database connection file here
-error_reporting(E_ALL ^ E_NOTICE);
-$id = $_GET['id']; // get id through query string
+error_reporting(E_ALL & ~E_NOTICE);
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+if ($id <= 0) {
+	header('Location: Admin.php?view=post');
+	exit;
+}
 
-$del = mysqli_query($conn,"delete from announcement where id =" .$id); // delete query
+$del = mysqli_query($conn, 'DELETE FROM announcement WHERE id = ' . $id); // delete query
 
 if($del)
 {

@@ -14,7 +14,7 @@ $x = 0;
 if(!$check){
 	die ('Could not fetch data!'.mysqli_error());
 }
-$tick = mysqli_fetch_array($check);
+$tick = mysqli_fetch_assoc($check);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -119,7 +119,7 @@ $tick = mysqli_fetch_array($check);
 						echo "</table><table><td><a style=\"color:red\">Please Create a Logbook!</a></td></table>";
 					}
 					else{
-					while ($row = mysqli_fetch_array($sql)){
+					while ($row = mysqli_fetch_assoc($sql)){
 						
 					echo "<tr>
 						<th>" .++$x. "</th>";
@@ -130,13 +130,13 @@ $tick = mysqli_fetch_array($check);
 					<td><?php 
 						$stu1 = $row['stud1'];
 						$checkName = mysqli_query($conn,"Select studName from student where studID = '$stu1'");
-						$d = mysqli_fetch_array($checkName);
+						$d = mysqli_fetch_assoc($checkName);
 						echo "1.". $d['studName'];
 						
 							if ($row['stud2'] != null){ 
 								$stu2 = $row['stud2'];
 						$checkName = mysqli_query($conn,"Select studName from student where studID = '$stu2'");
-						$d = mysqli_fetch_array($checkName);
+						$d = mysqli_fetch_assoc($checkName);
 								echo "<br>2.".$d['studName']; }
 						else {
 							echo "";
@@ -145,7 +145,7 @@ $tick = mysqli_fetch_array($check);
 						if ($row['stud3'] != null){ 
 							$stu3 = $row['stud3'];
 						$checkName = mysqli_query($conn,"Select studName from student where studID = '$stu3'");
-						$d = mysqli_fetch_array($checkName);
+						$d = mysqli_fetch_assoc($checkName);
 							echo "<br>3.".$d['studName']; }
 						else {
 							echo "";

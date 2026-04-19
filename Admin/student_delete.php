@@ -1,8 +1,12 @@
 <?php
 
 include_once ('../includes/config.php'); // Using database connection file here
-error_reporting(E_ALL ^ E_NOTICE);
-$uid = $_GET['id']; // get id through query string
+error_reporting(E_ALL & ~E_NOTICE);
+if (!isset($_GET['id'])) {
+	header('Location: Admin.php?view=student');
+	exit;
+}
+$uid = mysqli_real_escape_string($conn, (string) $_GET['id']);
 
 $dell = mysqli_query($conn,"
 	DELETE users ,student 

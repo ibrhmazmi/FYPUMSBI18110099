@@ -1,10 +1,14 @@
 <?php
 
 require_once ('../includes/config.php'); // Using database connection file here
-error_reporting(E_ALL ^ E_NOTICE);
-$id = $_GET['courseID']; // get id through query string
+error_reporting(E_ALL & ~E_NOTICE);
+$id = isset($_GET['courseID']) ? (int) $_GET['courseID'] : 0;
+if ($id <= 0) {
+	header('Location: Admin.php?view=course');
+	exit;
+}
 
-$del = mysqli_query($conn,"delete from course where courseID =" .$id); // delete query
+$del = mysqli_query($conn, 'DELETE FROM course WHERE courseID = ' . $id); // delete query
 
 if($del)
 {

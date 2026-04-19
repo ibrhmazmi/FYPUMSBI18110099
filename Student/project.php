@@ -5,7 +5,7 @@
 									  "SELECT * FROM project 
 									   JOIN lecturer
 									  ON lecturer.lectID=project.svid WHERE stud1 = '$id' OR stud2 = '$id' or stud3 = '$id' ");
-$data = mysqli_fetch_array($viewsql);
+$data = mysqli_fetch_assoc($viewsql);
 //assign lectName to null if no SV assign yet
 		$svname = $data['lectName'] ?? null;
 			
@@ -18,7 +18,7 @@ $data = mysqli_fetch_array($viewsql);
 				$row_count = $sql->num_rows;
 				if ($row_count == 1)  {
 					
-			while ($row = mysqli_fetch_array($sql))
+			while ($row = mysqli_fetch_assoc($sql))
 			{ 
 			$file = $row['proposalFileWord'];
 			$filedir = "upload/student_file/proposal";
@@ -58,7 +58,7 @@ $data = mysqli_fetch_array($viewsql);
 				$id2 = $row['stud2'];
 				$id3 = $row['stud3'];
 				$check = mysqli_query($conn,"Select studName from student where studID = '$id1'");
-				$d = mysqli_fetch_array($check);
+				$d = mysqli_fetch_assoc($check);
 				?>
 				<tr>
 					<td id="td1">STUDENT 1</td>
@@ -70,7 +70,7 @@ $data = mysqli_fetch_array($viewsql);
 				} 
 				else 
 				{$check = mysqli_query($conn,"Select studName from student where studID = '$id2'");
-				$d = mysqli_fetch_array($check);
+				$d = mysqli_fetch_assoc($check);
 				?>
 				<tr>
 					<td id="td1">STUDENT 2</td>
@@ -88,7 +88,7 @@ $data = mysqli_fetch_array($viewsql);
 				else 
 				{
 					$check = mysqli_query($conn,"Select studName from student where studID = '$id3'");
-				$d = mysqli_fetch_array($check);
+				$d = mysqli_fetch_assoc($check);
 				?>
 				<tr>
 					<td id="td1">STUDENT 3</td>
@@ -123,7 +123,7 @@ $data = mysqli_fetch_array($viewsql);
 									  "SELECT * FROM project 
 									   JOIN lecturer
 									  ON lecturer.lectID=project.exid1 WHERE stud1 = '$id' OR stud2 = '$id' or stud3 = '$id' ");
-$data = mysqli_fetch_array($ex1sql);
+$data = mysqli_fetch_assoc($ex1sql);
 //assign lectName to null if no SV assign yet
 		$ex1name = $data['lectName'] ?? null;
 				if($row['exid1'] ==null){
@@ -141,7 +141,7 @@ $data = mysqli_fetch_array($ex1sql);
 									  "SELECT * FROM project 
 									   JOIN lecturer
 									  ON lecturer.lectID=project.exid2 WHERE stud1 = '$id' OR stud2 = '$id' or stud3 = '$id' ");
-$data = mysqli_fetch_array($ex1sql);
+$data = mysqli_fetch_assoc($ex1sql);
 //assign lectName to null if no SV assign yet
 		$ex2name = $data['lectName'] ?? null;
 				if($row['exid2'] ==null){
@@ -222,14 +222,14 @@ else {?>
 				</tr>
 				<?php 
 					if(mysqli_num_rows($checkApplication)>0){
-					while($result = mysqli_fetch_array($checkApplication))
+					while($result = mysqli_fetch_assoc($checkApplication))
 			{ 
 						$pid = $result['svProjectID'];
 				$sql = mysqli_query($conn,"Select * from svproject where id = '$pid' ");
-				$data = mysqli_fetch_array($sql);
+				$data = mysqli_fetch_assoc($sql);
 						$svpid = $data['svid'];
 						$sql2 = mysqli_query($conn,"SElect lectName from lecturer where lectID = '$svpid'");
-						$data2 = mysqli_fetch_array($sql2);
+						$data2 = mysqli_fetch_assoc($sql2);
 				?>
 				<tr>
 				<td id="ap"><?php echo ++$x ?></td>

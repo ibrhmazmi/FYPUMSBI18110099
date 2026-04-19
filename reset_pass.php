@@ -1,38 +1,61 @@
 <?php include_once 'includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
-$info = $_SESSION['info'];
+error_reporting(E_ALL & ~E_NOTICE);
 
-if(isset($_POST['submit'])){
-	$code = $_POST['code'];
-	$email = $_SESSION['email'];
-	$sql = "Select *
-FROM
-(SELECT studEmail,code FROM student 
-UNION 
-SELECT lectEmail,code FROM lecturer) as user_Email
-WHERE studEmail = '$email' and code = $code";
-	
-	$result = mysqli_query($conn,$sql);
-	
-	if(mysqli_num_rows($result) >0){
-		$code = 0;
-		$resetStud = "Update student Set code = $code where studEmail = '$email'";
-		$resetLect = "Update lecturer Set code = $code where lectEmail = '$email'";
-		$res1 = mysqli_query($conn,$resetStud);
-		$res2 = mysqli_query($conn,$resetLect);
-		
-		if($res1 >0 || $res2 >0){
-			$noty = "Please Enter New Password for <br><b>$email</b>";
-			$_SESSION['noty'] = $noty;
-			header('location:reset.php');
+$info = isset($_SESSION['info']) ? $_SESSION['info'] : '';
+
+if (isset($_POST['submit'])) {
+	$code = isset($_POST['code']) ? (int) $_POST['code'] : 0;
+	$email = isset($_SESSION['email']) ? trim((string) $_SESSION['email']) : '';
+
+	if ($email === '') {
+		$info = 'Session expired. Please start again from Forgot Password.';
+	} elseif ($code < 100000 || $code > 999999) {
+		$info = '<style>.noty{background-color:indianred;color:white; }</style>Please enter a valid 6-digit code.';
+	} else {
+		$stmt = mysqli_prepare(
+			$conn,
+			'SELECT 1 FROM student WHERE studEmail = ? AND code = ?
+			 UNION ALL
+			 SELECT 1 FROM lecturer WHERE lectEmail = ? AND code = ?
+			 LIMIT 1'
+		);
+		if ($stmt) {
+			mysqli_stmt_bind_param($stmt, 'sisi', $email, $code, $email, $code);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_store_result($stmt);
+			$ok = mysqli_stmt_num_rows($stmt) > 0;
+			mysqli_stmt_close($stmt);
+		} else {
+			$ok = false;
 		}
-		else{
-			$info = "Error when update ";
+
+		if ($ok) {
+			$resetStud = mysqli_prepare($conn, 'UPDATE student SET code = 0 WHERE studEmail = ?');
+			$resetLect = mysqli_prepare($conn, 'UPDATE lecturer SET code = 0 WHERE lectEmail = ?');
+			$res1 = false;
+			$res2 = false;
+			if ($resetStud) {
+				mysqli_stmt_bind_param($resetStud, 's', $email);
+				$res1 = mysqli_stmt_execute($resetStud);
+				mysqli_stmt_close($resetStud);
+			}
+			if ($resetLect) {
+				mysqli_stmt_bind_param($resetLect, 's', $email);
+				$res2 = mysqli_stmt_execute($resetLect);
+				mysqli_stmt_close($resetLect);
+			}
+
+			if ($res1 || $res2) {
+				$safeEmail = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
+				$noty = "Please Enter New Password for <br><b>{$safeEmail}</b>";
+				$_SESSION['noty'] = $noty;
+				header('location:reset.php');
+				exit;
+			}
+			$info = 'Error when update code to db ';
+		} else {
+			$info = "<style>.noty{background-color:indianred;color:white; }</style>You've entered incorrect code";
 		}
-	}
-	else
-	{
-		$info = "<style>.noty{background-color:indianred;color:white; }</style>You've entered incorrect code";
 	}
 }
 ?>
@@ -85,15 +108,12 @@ WHERE studEmail = '$email' and code = $code";
 
 		input::-webkit-outer-spin-button,
 		input::-webkit-inner-spin-button {
-			/* display: none; <- Crashes Chrome on hover */
 			-webkit-appearance: none;
 			margin: 0;
-			/* <-- Apparently some margin are still there even though it's hidden */
 		}
 
 		input[type=number] {
 			-moz-appearance: textfield;
-			/* Firefox */
 		}
 
 	</style>

@@ -1,59 +1,92 @@
 <?php include_once 'includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
-$email = $_POST['email'];
+error_reporting(E_ALL & ~E_NOTICE);
+
+$email = isset($_POST['email']) ? trim((string) $_POST['email']) : '';
 $err = '';
 
-if(isset($_POST['submit'])){
-	$sql = ("Select *
-FROM
-(SELECT studEmail FROM student 
-UNION 
-SELECT lectEmail FROM lecturer) as user_Email
-where studEmail = '$email'");
-	$result = mysqli_query($conn,$sql);
-	if(mysqli_num_rows($result) >0)
-	{
-		$code = rand(999999,111111);
-		$stud_code = "UPDATE student SET code = $code WHERE studEmail = '$email'";
-		$lect_code = "UPDATE lecturer SET code = $code WHERE lectEmail = '$email'";
-		
-		$check_stud = mysqli_query($conn,$stud_code);
-		$check_lect = mysqli_query($conn,$lect_code);
-		
-		if($check_stud || $check_lect)
-		{
-			$subject = "Password Reset Code";
-			$message = "Your password Reset Code is $code";
-			$sender = "From: qalphag96@gmail.com";
-			if(mail($email, $subject, $message, $sender))
-			{
-				$info = "We've sent a reset code to your email - <br><b>$email</b>";
-				$_SESSION['info'] = $info;
-				$_SESSION['email'] = $email;
-				header('location:reset_pass.php');
-			}
-			else
-			{
-				$err = "ERROR while send";
-			}
-		}
-		else
-		{
-			$err = "error when update code to db ";
-		}
-	}
-	else
-	{
-		$err = "Email does not exist";
-	}
+if (isset($_POST['submit'])) {
+	if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		$err = 'Please enter a valid email address.';
+	} else {
+		$c_student = 0;
+		$c_lecturer = 0;
 
+		$stmt = mysqli_prepare($conn, 'SELECT COUNT(*) FROM student WHERE studEmail = ?');
+		if ($stmt) {
+			mysqli_stmt_bind_param($stmt, 's', $email);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $c_student);
+			mysqli_stmt_fetch($stmt);
+			mysqli_stmt_close($stmt);
+		}
+
+		$stmt = mysqli_prepare($conn, 'SELECT COUNT(*) FROM lecturer WHERE lectEmail = ?');
+		if ($stmt) {
+			mysqli_stmt_bind_param($stmt, 's', $email);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_bind_result($stmt, $c_lecturer);
+			mysqli_stmt_fetch($stmt);
+			mysqli_stmt_close($stmt);
+		}
+
+		if ($c_student > 0 || $c_lecturer > 0) {
+			$code = random_int(100000, 999999);
+
+			$ok_student = true;
+			$ok_lecturer = true;
+
+			if ($c_student > 0) {
+				$stmt = mysqli_prepare($conn, 'UPDATE student SET code = ? WHERE studEmail = ?');
+				if ($stmt) {
+					mysqli_stmt_bind_param($stmt, 'is', $code, $email);
+					$ok_student = mysqli_stmt_execute($stmt);
+					mysqli_stmt_close($stmt);
+				} else {
+					$ok_student = false;
+				}
+			}
+
+			if ($c_lecturer > 0) {
+				$stmt = mysqli_prepare($conn, 'UPDATE lecturer SET code = ? WHERE lectEmail = ?');
+				if ($stmt) {
+					mysqli_stmt_bind_param($stmt, 'is', $code, $email);
+					$ok_lecturer = mysqli_stmt_execute($stmt);
+					mysqli_stmt_close($stmt);
+				} else {
+					$ok_lecturer = false;
+				}
+			}
+
+			if ($ok_student && $ok_lecturer) {
+				$subject = 'Password Reset Code';
+				$message = 'Your password Reset Code is ' . $code;
+				$sender = 'From: ' . $mail_from;
+				if (mail($email, $subject, $message, $sender)) {
+					$safe = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
+					$info = "We've sent a reset code to your email - <br><b>{$safe}</b>";
+					$_SESSION['info'] = $info;
+					$_SESSION['email'] = $email;
+					header('location:reset_pass.php');
+					exit;
+				} else {
+					$err = 'ERROR while send';
+				}
+			} else {
+				$err = 'error when update code to db ';
+			}
+		} else {
+			$err = 'Email does not exist';
+		}
+	}
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<link rel="icon" href="img/fci.png">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="img/fci.png">
 	<style>
 		.ForMain {
 			/*				margin-top: 40px;*/
@@ -116,15 +149,13 @@ where studEmail = '$email'");
 		<div class="box1">
 			<h3>Forgot Password</h3>
 			<h6>Enter your email address</h6>
-			<?php if($err == ''){
-}else{
- ?>
+			<?php if ($err !== '') { ?>
 			<div class="alert_box">
-				<?php echo "<a>".$err."</a>"; ?>
+				<a><?php echo htmlspecialchars($err, ENT_QUOTES, 'UTF-8'); ?></a>
 			</div>
-			<?php }	?>
+			<?php } ?>
 			<form method="post">
-				<input type="email" name="email" placeholder="Enter email address"><br>
+				<input type="email" name="email" value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" placeholder="Enter email address"><br>
 
 				<button type="submit" name="submit">Continue</button>
 			</form>

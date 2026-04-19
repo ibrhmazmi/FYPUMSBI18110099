@@ -1,6 +1,6 @@
 <?php 
 include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE); 
+error_reporting(E_ALL & ~E_NOTICE); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -114,7 +114,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 						<td><select id="inSt" name="kod">
 								<?php 
 	$sql3 = mysqli_query($conn,"SELECT * from course");
-while($d = mysqli_fetch_array($sql3))
+while($d = mysqli_fetch_assoc($sql3))
 							{
 		echo "<option id=\"inSt\" value=\"{$d['CourseCode']}\">{$d['CourseCode']} </option>";
 							}							

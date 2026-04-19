@@ -1,8 +1,12 @@
 <?php
 
 include_once ('../includes/config.php'); // Using database connection file here
-error_reporting(E_ALL ^ E_NOTICE);
-$id = $_GET['id']; // get id through query string
+error_reporting(E_ALL & ~E_NOTICE);
+if (!isset($_GET['id'])) {
+	echo 'Invalid request';
+	exit;
+}
+$id = mysqli_real_escape_string($conn, (string) $_GET['id']);
 
 $svM = mysqli_query($conn,"SELECT * from marking where studID = '$id' ");
 		$a = mysqli_fetch_assoc($svM);
@@ -231,7 +235,7 @@ fyp2EX2presentW14) VALUES ('$id','$s1',
 <div class="cont">
 	<?php 
 	$sql = mysqli_query($conn,"SELECT studName from student where studID = '$id'");
-	$r = mysqli_fetch_array($sql);
+	$r = mysqli_fetch_assoc($sql);
 	?>
 	<label id="headLabel">Update <?php echo $r['studName']." (".$id.")";  ?> Marks</label>
 	<hr>

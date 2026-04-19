@@ -1,14 +1,10 @@
 
+default password = matric number
 
-default password = matric number 
-
-dbname = "fyp" || "umskalfy_fyp"
-pass = "" || "+1C5cC1@dDlu5V"
-
-//server side setting
-change the credentials in :
+Database: set `dbname`, `user`, and `password` in:
 - includes/config.php
-- Admin/student_fetch.php
+- Admin/student_fetch.php (if applicable)
 
-change the sender email in :
-- forgot.php
+Mail sender address:
+- includes/config.php (`$mail_from`), used by forgot.php
+

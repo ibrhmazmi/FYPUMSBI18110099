@@ -83,7 +83,7 @@ $svid = $_SESSION['user'];
 				}else{
 					
 				
-					while ($row = mysqli_fetch_array($sql)){
+					while ($row = mysqli_fetch_assoc($sql)){
 						
 						echo "<tr>
 						<th>".++$x. "</th>";
@@ -99,15 +99,15 @@ $svid = $_SESSION['user'];
 					<?php 
 							$stID = $row['studID'];
 							$data = mysqli_query($conn,"Select * FROM marking where studID = '$stID'");
-							$m = mysqli_fetch_array($data);
+							$m = mysqli_fetch_assoc($data) ?: [];
 					
 //							calculate marks for fyp1
-							$fyp1mark = $m['fyp1SVreportW7'] + $m['fyp1SVreportW14'] + $m['fyp1SVprotoW14'] + $m['fyp1SVlogW7'] + $m['fyp1SVlogW14'];
+							$fyp1mark = (float)($m['fyp1SVreportW7'] ?? 0) + (float)($m['fyp1SVreportW14'] ?? 0) + (float)($m['fyp1SVprotoW14'] ?? 0) + (float)($m['fyp1SVlogW7'] ?? 0) + (float)($m['fyp1SVlogW14'] ?? 0);
 					?>
 					<td id="cent"><?php echo $fyp1mark; ?></td>
 					<?php
 //							calculate marks for fyp2
-							$fyp2mark = $m['fyp2SVreportW7'] + $m['fyp2SVreportW14'] + $m['fyp2SVimplementW7'] + $m['fyp2SVimplementW14'] + $m['fyp2SVlogW7'] + $m['fyp2SVlogW14'] + $m['fyp2SVposterW14'];
+							$fyp2mark = (float)($m['fyp2SVreportW7'] ?? 0) + (float)($m['fyp2SVreportW14'] ?? 0) + (float)($m['fyp2SVimplementW7'] ?? 0) + (float)($m['fyp2SVimplementW14'] ?? 0) + (float)($m['fyp2SVlogW7'] ?? 0) + (float)($m['fyp2SVlogW14'] ?? 0) + (float)($m['fyp2SVposterW14'] ?? 0);
 							?>
 
 					<td id="cent"><?php echo $fyp2mark; ?></td>
@@ -155,7 +155,7 @@ $svid = $_SESSION['user'];
 					}else{
 						
 					
-					while ($row = mysqli_fetch_array($sql)){
+					while ($row = mysqli_fetch_assoc($sql)){
 						echo "<tr>
 						<th>".++$x. "</th>";
 					?>
@@ -169,14 +169,14 @@ $svid = $_SESSION['user'];
 						<?php
 							$stID = $row['studID'];
 							$data = mysqli_query($conn,"Select * FROM marking where studID = '$stID'");
-							$exM = mysqli_fetch_array($data);
+							$exM = mysqli_fetch_assoc($data) ?: [];
 				if($svid == $row['exid2'] ){
-					$fyp1Ex2marking = $exM['fyp1EX2reportW14'] + $exM['fyp1EX2protoW14'] + $exM['fyp1EX2presentW7'] +$exM['fyp1EX2presentW14'];
+					$fyp1Ex2marking = (float)($exM['fyp1EX2reportW14'] ?? 0) + (float)($exM['fyp1EX2protoW14'] ?? 0) + (float)($exM['fyp1EX2presentW7'] ?? 0) + (float)($exM['fyp1EX2presentW14'] ?? 0);
 					echo $fyp1Ex2marking;
 				}
 							else 
 							{
-					$fyp1Ex1marking = $exM['fyp1EX1reportW14'] + $exM['fyp1EX1protoW14'] + $exM['fyp1EX1presentW7'] +$exM['fyp1EX1presentW14'];
+					$fyp1Ex1marking = (float)($exM['fyp1EX1reportW14'] ?? 0) + (float)($exM['fyp1EX1protoW14'] ?? 0) + (float)($exM['fyp1EX1presentW7'] ?? 0) + (float)($exM['fyp1EX1presentW14'] ?? 0);
 					echo $fyp1Ex1marking;
 				}
 					?>
@@ -184,12 +184,12 @@ $svid = $_SESSION['user'];
 					<td id="cent">
 						<?php
 							if($svid == $row['exid2'] ){
-					$fyp2Ex2marking = $exM['fyp2EX2reportW14'] + $exM['fyp2EX2demoW7'] + $exM['fyp2EX2demoW14'] + $exM['fyp2EX2presentW7'] + $exM['fyp2EX2presentW14'];
+					$fyp2Ex2marking = (float)($exM['fyp2EX2reportW14'] ?? 0) + (float)($exM['fyp2EX2demoW7'] ?? 0) + (float)($exM['fyp2EX2demoW14'] ?? 0) + (float)($exM['fyp2EX2presentW7'] ?? 0) + (float)($exM['fyp2EX2presentW14'] ?? 0);
 					echo $fyp2Ex2marking;
 				}
 							else 
 							{
-								$fyp2Ex1marking = $exM['fyp2EX1reportW14'] + $exM['fyp2EX1demoW7'] + $exM['fyp2EX1demoW14'] + $exM['fyp2EX1presentW7'] + $exM['fyp2EX1presentW14'];
+								$fyp2Ex1marking = (float)($exM['fyp2EX1reportW14'] ?? 0) + (float)($exM['fyp2EX1demoW7'] ?? 0) + (float)($exM['fyp2EX1demoW14'] ?? 0) + (float)($exM['fyp2EX1presentW7'] ?? 0) + (float)($exM['fyp2EX1presentW14'] ?? 0);
 								echo $fyp2Ex1marking;
 				}
 							?>

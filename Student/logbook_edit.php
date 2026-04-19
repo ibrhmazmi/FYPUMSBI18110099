@@ -11,7 +11,7 @@ $id = $_GET['id'];
 }
 
 
-$data = mysqli_fetch_array($qry); 
+$data = mysqli_fetch_assoc($qry); 
 if(isset($_POST['update'])){
 	
 	$date = $_POST['logdate'];

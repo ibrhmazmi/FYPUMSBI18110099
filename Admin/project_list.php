@@ -14,7 +14,7 @@
 
 
 			<?php include_once "../includes/config.php";
-error_reporting(E_ALL ^ E_NOTICE);  
+error_reporting(E_ALL & ~E_NOTICE);  
 
 			
 		
@@ -44,27 +44,27 @@ error_reporting(E_ALL ^ E_NOTICE);
 				<?php
 				
 				$x = 0;
-				while($row = mysqli_fetch_array($list)){
-					//declare path to download Word file from
-					$proWord = $row['proposalFileWord'];
+				while($row = mysqli_fetch_assoc($list)){
+					//declare path to download Word file from (basename() requires string in PHP 8.1+)
+					$proWord = (string) ($row['proposalFileWord'] ?? '');
 					$proTarget = "../Student/upload/student_file/proposal/".basename($proWord);
-					$R1Word = $row['fyp1FileWord'];
+					$R1Word = (string) ($row['fyp1FileWord'] ?? '');
 					$R1WordTarget = "../Student/upload/student_file/fyp1/".basename($R1Word);
-					$R2Word = $row['fyp2FileWord'];
+					$R2Word = (string) ($row['fyp2FileWord'] ?? '');
 					$R2WordTarget = "../Student/upload/student_file/fyp2/".basename($R2Word);
 					
 					//declare path to download PDF file from
-					$R1PDF = $row['fyp1FilePDF'];
+					$R1PDF = (string) ($row['fyp1FilePDF'] ?? '');
 					$R1PDFTarget = "../Student/upload/student_file/fyp1/".basename($R1PDF);
-					$R2PDF = $row['fyp2FilePDF'];
+					$R2PDF = (string) ($row['fyp2FilePDF'] ?? '');
 					$R2PDFTarget = "../Student/upload/student_file/fyp2/".basename($R2PDF);
 					
 					//declare path to download poster
-					$poster = $row['poster'];
+					$poster = (string) ($row['poster'] ?? '');
 					$posterTar = "../Student/upload/student_file/poster/".basename($poster);
 					
 					//declare path to download sourcefile
-					$source = $row['source_file'];
+					$source = (string) ($row['source_file'] ?? '');
 					$sourceTar = "../Student/upload/student_file/source/".basename($source);
 					?>
 				<tr>
@@ -75,7 +75,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 					<td><?php
 					$s = $row['svid'];
 					$sc = mysqli_query($conn,"SElect lectName from lecturer where lectID = '$s'");
-					$sName = mysqli_fetch_array($sc);
+					$sName = mysqli_fetch_assoc($sc);
 					if (!empty($s)){
 					echo $sName['lectName'];
 						}
@@ -88,7 +88,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 					<td><?php 
 					$st1 = $row['stud1'];
 					$sq = mysqli_query($conn,"SELECT studName from student where studID ='$st1' ");
-					$d = mysqli_fetch_array($sq);
+					$d = mysqli_fetch_assoc($sq);
 					echo "1. ".$d['studName']."<br>".$row['stud1'];?><br>
 
 						<?php 
@@ -96,7 +96,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 					$st2 = $row['stud2'];
 					if(!empty($st2)){
 					$sq = mysqli_query($conn,"SELECT studName from student where studID ='$st2' ");
-					$d = mysqli_fetch_array($sq);
+					$d = mysqli_fetch_assoc($sq);
 					
 					echo "2. ".$d['studName']."<br>".$row['stud2'];
 						}
@@ -105,7 +105,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 					$st3 = $row['stud3'];
 					if(!empty($st3)){
 					$sq = mysqli_query($conn,"SELECT studName from student where studID ='$st3' ");
-					$d = mysqli_fetch_array($sq);
+					$d = mysqli_fetch_assoc($sq);
 					
 					echo "<br>3. ".$d['studName']."<br>".$row['stud3'];
 						}
@@ -154,21 +154,21 @@ error_reporting(E_ALL ^ E_NOTICE);
 						
 					$ckex2 = $row['exid2'];
 					$cd = mysqli_query($conn,"SELECT lectName from lecturer where lectID = '$ckex2'");
-					$d = mysqli_fetch_array($cd);
+					$d = mysqli_fetch_assoc($cd);
 						echo "<a style=\"color:red\">1.NOT ASSIGN</a><br>2.".$d['lectName'];
 					}
 					else if ($row['exid2'] ==null){
 					$ckex1 = $row['exid1'];
 					$cd = mysqli_query($conn,"SELECT lectName from lecturer where lectID = '$ckex1'");
-					$d = mysqli_fetch_array($cd);
+					$d = mysqli_fetch_assoc($cd);
 						echo "1.".$d['lectName']."<br><a style=\"color:red\">2.NOT ASSIGN</a>";
 					}else{
 						$ckex1 = $row['exid1'];
 					$ckex2 = $row['exid2'];
 					$cd = mysqli_query($conn,"SELECT lectName from lecturer where lectID = '$ckex1'");
-					$d = mysqli_fetch_array($cd);
+					$d = mysqli_fetch_assoc($cd);
 						$cd2 = mysqli_query($conn,"SELECT lectName from lecturer where lectID = '$ckex2'");
-					$d2 = mysqli_fetch_array($cd2);
+					$d2 = mysqli_fetch_assoc($cd2);
 						 echo "1.".$d['lectName']."<br>2.".$d2['lectName'];
 					}
 						?></td>

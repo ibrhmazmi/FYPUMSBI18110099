@@ -1,30 +1,37 @@
 <?php
 include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE); 
-$studID = $_GET['id'];
-$id = $_SESSION['user'];
-$s1 = $_POST['fyp1Rw7'];
-$s2 = $_POST['fyp1Rw14'];
-$s3 = $_POST['fyp1Pw14'];
-$s4 = $_POST['fyp1Cw7'];
-$s5 = $_POST['fyp1Cw14'];
-$s6 = $_POST['fyp2Rw7'];
-$s7 = $_POST['fyp2Rw14'];
-$s8 = $_POST['fyp2IMw7'];
-$s9 = $_POST['fyp2IMw14'];
-$s10 = $_POST['fyp2Cw7'];
-$s11 = $_POST['fyp2Cw14'];
-$s12 = $_POST['fyp1Posw14'];
+error_reporting(E_ALL & ~E_NOTICE); 
+if (!isset($_GET['id'])) {
+	exit('Invalid request');
+}
+if (!isset($_SESSION['user'])) {
+	exit('Invalid request');
+}
+$studID = mysqli_real_escape_string($conn, (string) $_GET['id']);
+$id = mysqli_real_escape_string($conn, (string) $_SESSION['user']);
 
-$sql = mysqli_query($conn,"select * from project where svid ='$id' AND stud1 ='$studID' or stud2 ='$studID'");
+$sql = mysqli_query($conn,"SELECT * FROM project WHERE svid = '$id' AND (stud1 = '$studID' OR stud2 = '$studID' OR stud3 = '$studID')");
 
-					$data = mysqli_fetch_array($sql);
+					$data = mysqli_fetch_assoc($sql) ?: [];
 
-$gmstudent = mysqli_query($conn,"select * from marking where studID ='$studID'");
-$gm = mysqli_fetch_array($gmstudent);
+$gmstudent = mysqli_query($conn,"SELECT * FROM marking WHERE studID ='$studID'");
+$gm = mysqli_fetch_assoc($gmstudent) ?: [];
 $kira = mysqli_num_rows($gmstudent);
 
 if(isset($_POST['submit'])){
+	$s1 = $_POST['fyp1Rw7'] ?? '';
+	$s2 = $_POST['fyp1Rw14'] ?? '';
+	$s3 = $_POST['fyp1Pw14'] ?? '';
+	$s4 = $_POST['fyp1Cw7'] ?? '';
+	$s5 = $_POST['fyp1Cw14'] ?? '';
+	$s6 = $_POST['fyp2Rw7'] ?? '';
+	$s7 = $_POST['fyp2Rw14'] ?? '';
+	$s8 = $_POST['fyp2IMw7'] ?? '';
+	$s9 = $_POST['fyp2IMw14'] ?? '';
+	$s10 = $_POST['fyp2Cw7'] ?? '';
+	$s11 = $_POST['fyp2Cw14'] ?? '';
+	$s12 = $_POST['fyp1Posw14'] ?? '';
+
 	if($kira ==0){
 		$sql2 = "insert into marking (studID,fyp1SVreportW7,
 fyp1SVreportW14,
@@ -169,14 +176,14 @@ fyp2SVposterW14) VALUES ('$studID','$s1',
 			<table id="ttop">
 				<tr>
 					<td>PROJECT TITLE:<br>
-						<?php echo $data['ProjectTitle']; ?>
+						<?php echo htmlspecialchars((string)($data['ProjectTitle'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
 					</td>
 					<td>STUDENT:<br>
 						<?php 
 							$sql2 = mysqli_query($conn,"Select * FROM student where studID ='$studID'");
-							$data2= mysqli_fetch_array($sql2);
+							$data2= mysqli_fetch_assoc($sql2) ?: [];
 							
-							echo $data2['studName']."<br>".$studID;
+							echo htmlspecialchars((string)($data2['studName'] ?? ''), ENT_QUOTES, 'UTF-8')."<br>".htmlspecialchars((string)$studID, ENT_QUOTES, 'UTF-8');
 							?>
 					</td>
 				</tr>
@@ -202,18 +209,18 @@ fyp2SVposterW14) VALUES ('$studID','$s1',
 						</tr>
 						<tr>
 							<th>REPORT</th>
-							<td><input id="in" type="number" max="10" min="0" name="fyp1Rw7" step="0.01" value="<?php echo $gm['fyp1SVreportW7'] ?>"></td>
-							<td><input id="in" max="15" min="0" type="number" step="0.01" value="<?php echo $gm['fyp1SVreportW14'] ?>" name="fyp1Rw14"></td>
+							<td><input id="in" type="number" max="10" min="0" name="fyp1Rw7" step="0.01" value="<?php echo htmlspecialchars((string)($gm['fyp1SVreportW7'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>"></td>
+							<td><input id="in" max="15" min="0" type="number" step="0.01" value="<?php echo htmlspecialchars((string)($gm['fyp1SVreportW14'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" name="fyp1Rw14"></td>
 						</tr>
 						<tr>
 							<th>PROTOTYPE/PRELIMINARY RESULTS</th>
 							<td><input id="out" value="NOT AVAILABLE" disabled></td>
-							<td><input id="in" max="5" min="0" type="number" step="0.01" value="<?php echo $gm['fyp1SVprotoW14'] ?>" name="fyp1Pw14"></td>
+							<td><input id="in" max="5" min="0" type="number" step="0.01" value="<?php echo htmlspecialchars((string)($gm['fyp1SVprotoW14'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" name="fyp1Pw14"></td>
 						</tr>
 						<tr>
 							<th>CONSULTATION/LOGBOOK</th>
-							<td><input id="in" max="5" min="0" type="number" step="0.01" value="<?php echo $gm['fyp1SVlogW7'] ?>" name="fyp1Cw7"></td>
-							<td><input id="in" max="5" min="0" type="number" step="0.01" value="<?php echo $gm['fyp1SVlogW14'] ?>" name="fyp1Cw14"></td>
+							<td><input id="in" max="5" min="0" type="number" step="0.01" value="<?php echo htmlspecialchars((string)($gm['fyp1SVlogW7'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" name="fyp1Cw7"></td>
+							<td><input id="in" max="5" min="0" type="number" step="0.01" value="<?php echo htmlspecialchars((string)($gm['fyp1SVlogW14'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" name="fyp1Cw14"></td>
 						</tr>
 					</table>
 				</fieldset>
@@ -237,23 +244,23 @@ fyp2SVposterW14) VALUES ('$studID','$s1',
 						</tr>
 						<tr>
 							<th>REPORT</th>
-							<td><input id="in" max="5" min="0" type="number" step="0.01" name="fyp2Rw7" value="<?php echo $gm['fyp2SVreportW7'] ?>"></td>
-							<td><input id="in" max="10" min="0" type="number" step="0.01" name="fyp2Rw14" value="<?php echo $gm['fyp2SVreportW14'] ?>"></td>
+							<td><input id="in" max="5" min="0" type="number" step="0.01" name="fyp2Rw7" value="<?php echo htmlspecialchars((string)($gm['fyp2SVreportW7'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>"></td>
+							<td><input id="in" max="10" min="0" type="number" step="0.01" name="fyp2Rw14" value="<?php echo htmlspecialchars((string)($gm['fyp2SVreportW14'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>"></td>
 						</tr>
 						<tr>
 							<th>IMPLEMENTATION/SIMULATION TOOLS/EXPERIMENT</th>
-							<td><input id="in" max="5" min="0" type="float" step="0.01" name="fyp2IMw7" value="<?php echo $gm['fyp2SVimplementW7'] ?>"></td>
-							<td><input id="in" max="10" min="0" type="number" step="0.01" name="fyp2IMw14" value="<?php echo $gm['fyp2SVimplementW14'] ?>"></td>
+							<td><input id="in" max="5" min="0" type="float" step="0.01" name="fyp2IMw7" value="<?php echo htmlspecialchars((string)($gm['fyp2SVimplementW7'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>"></td>
+							<td><input id="in" max="10" min="0" type="number" step="0.01" name="fyp2IMw14" value="<?php echo htmlspecialchars((string)($gm['fyp2SVimplementW14'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>"></td>
 						</tr>
 						<tr>
 							<th>CONSULTATION/LOGBOOK</th>
-							<td><input id="in" max="2.5" min="0" type="number" step="0.01" value="<?php echo $gm['fyp2SVlogW7'] ?>" name="fyp2Cw7"></td>
-							<td><input id="in" max="2.5" min="0" type="number" value="<?php echo $gm['fyp2SVlogW14'] ?>" name="fyp2Cw14" step="0.01"></td>
+							<td><input id="in" max="2.5" min="0" type="number" step="0.01" value="<?php echo htmlspecialchars((string)($gm['fyp2SVlogW7'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" name="fyp2Cw7"></td>
+							<td><input id="in" max="2.5" min="0" type="number" value="<?php echo htmlspecialchars((string)($gm['fyp2SVlogW14'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" name="fyp2Cw14" step="0.01"></td>
 						</tr>
 						<tr>
 							<th>POSTER</th>
 							<td><input id="out" value="NOT AVAILABLE" disabled></td>
-							<td><input id="in" max="5" min="0" type="number" value="<?php echo $gm['fyp2SVposterW14'] ?>" name="fyp1Posw14" step="0.01"></td>
+							<td><input id="in" max="5" min="0" type="number" value="<?php echo htmlspecialchars((string)($gm['fyp2SVposterW14'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" name="fyp1Posw14" step="0.01"></td>
 						</tr>
 					</table>
 				</fieldset>

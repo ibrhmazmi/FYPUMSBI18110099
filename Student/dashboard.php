@@ -1,15 +1,15 @@
 <?php include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 
 $id = $_SESSION['user'];
 $project = mysqli_query($conn,"Select * from project where stud1 = '$id' OR stud2 = '$id' or stud3 = '$id'");
 
-$p = mysqli_fetch_array($project);
+$p = mysqli_fetch_assoc($project);
 
 
 $logbook = mysqli_query($conn,"Select * from logbook where stud1 = '$id' OR stud2 = '$id' or stud3 = '$id'");
 
-$log = mysqli_fetch_array($logbook);
+$log = mysqli_fetch_assoc($logbook);
 $kira = mysqli_num_rows($logbook);
 //calculate progress
 

@@ -77,7 +77,7 @@ include_once '../includes/config.php';
 }
 
 
-$data = mysqli_fetch_array($qry); 
+$data = mysqli_fetch_assoc($qry); 
 		?>
 		<div class="logViewLabel">
 			<label> <?php echo $data['week']; ?>'s LOGBOOK</label>

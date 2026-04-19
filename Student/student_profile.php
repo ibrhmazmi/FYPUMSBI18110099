@@ -1,7 +1,7 @@
 <?php
 include_once "../includes/config.php";
 
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 
 
 $id = $_SESSION['user'];
@@ -25,7 +25,7 @@ if (! $prof){
 
 	<?php 
 
-	while($udata = mysqli_fetch_array($prof)){
+	while($udata = mysqli_fetch_assoc($prof)){
 	
   
 	?>

@@ -1,14 +1,15 @@
 <?php include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 $id = $_SESSION['user'];
 $alert = "";
+$success = "";
 if(isset($_POST['update'])){
 	$fillPass = $_POST['pass'];
 	$NewPass = $_POST['newPass'];
 	$ConfirmNewPass = $_POST['ConPass'];
 	
 	$sql = mysqli_query($conn,"Select * from users where iduser = '$id'");
-	$result = mysqli_fetch_array($sql);
+	$result = mysqli_fetch_assoc($sql);
 	$oldPass = $result['password'];
 	if(empty($fillPass)){
 		$alert = "Please Enter Your Current Password";

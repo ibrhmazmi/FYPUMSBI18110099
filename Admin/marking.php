@@ -53,7 +53,7 @@
 	<div class="marking">
 		<?php
 
-		error_reporting(E_ALL ^ E_NOTICE);
+		error_reporting(E_ALL & ~E_NOTICE);
 		echo"
 		<label>STUDENT'S MARK LIST</label>
 		<button onclick='window.print();'>PRINT</button>
@@ -78,7 +78,7 @@ if (! $view){
 	die ('Could not get Data:'. mysqli_error($conn));
 }
 $x=0;
-while($row = mysqli_fetch_array($view)){
+while($row = mysqli_fetch_assoc($view)){
 	
 	echo "<tr>
 	<th>" .++$x. "</th>
@@ -92,10 +92,10 @@ while($row = mysqli_fetch_array($view)){
 	
 	$sid = $row['studID'];
 	$sql = mysqli_query($conn,"SELECT * FROM marking where studID = '$sid'");
-	$d = mysqli_fetch_array($sql);
+	$d = mysqli_fetch_assoc($sql) ?: [];
 	$fyp1total = 
-		$d['fyp1SVreportW7'] + $d['fyp1SVreportW14'] + $d['fyp1SVprotoW14'] + $d['fyp1SVlogW7']
-		+ $d['fyp1SVlogW14']+ $d['fyp1EX1reportW14'] + $d['fyp1EX1protoW14'] + $d['fyp1EX1presentW7'] + $d['fyp1EX1presentW14'] + $d['fyp1EX2reportW14'] + $d['fyp1EX2protoW14'] + $d['fyp1EX2presentW7'] + $d['fyp1EX2presentW14'];
+		(float)($d['fyp1SVreportW7'] ?? 0) + (float)($d['fyp1SVreportW14'] ?? 0) + (float)($d['fyp1SVprotoW14'] ?? 0) + (float)($d['fyp1SVlogW7'] ?? 0)
+		+ (float)($d['fyp1SVlogW14'] ?? 0) + (float)($d['fyp1EX1reportW14'] ?? 0) + (float)($d['fyp1EX1protoW14'] ?? 0) + (float)($d['fyp1EX1presentW7'] ?? 0) + (float)($d['fyp1EX1presentW14'] ?? 0) + (float)($d['fyp1EX2reportW14'] ?? 0) + (float)($d['fyp1EX2protoW14'] ?? 0) + (float)($d['fyp1EX2presentW7'] ?? 0) + (float)($d['fyp1EX2presentW14'] ?? 0);
 	echo 
 	"{$fyp1total} %
 	</td>
@@ -103,9 +103,9 @@ while($row = mysqli_fetch_array($view)){
 	
 	$sid = $row['studID'];
 	$sql2 = mysqli_query($conn,"SELECT * FROM marking where studID = '$sid'");
-	$d2 = mysqli_fetch_array($sql2);
+	$d2 = mysqli_fetch_assoc($sql2) ?: [];
 	$fyp2total = 
-		$d2['fyp2SVreportW7'] + $d2['fyp2SVreportW14'] + $d2['fyp2SVimplementW7'] + $d2['fyp2SVimplementW14'] + $d2['fyp2SVlogW7'] + $d2['fyp2SVlogW14'] + $d2['fyp2SVposterW14'] + $d2['fyp2EX1reportW14'] + $d2['fyp2EX1demoW7'] + $d2['fyp2EX1demoW14'] + $d2['fyp2EX1presentW7'] + $d2['fyp2EX1presentW14'] + $d2['fyp2EX2reportW14'] + $d2['fyp2EX2demoW7']+ $d2['fyp2EX2demoW14'] + $d2['fyp2EX2presentW7'] + $d2['fyp2EX2presentW14'];
+		(float)($d2['fyp2SVreportW7'] ?? 0) + (float)($d2['fyp2SVreportW14'] ?? 0) + (float)($d2['fyp2SVimplementW7'] ?? 0) + (float)($d2['fyp2SVimplementW14'] ?? 0) + (float)($d2['fyp2SVlogW7'] ?? 0) + (float)($d2['fyp2SVlogW14'] ?? 0) + (float)($d2['fyp2SVposterW14'] ?? 0) + (float)($d2['fyp2EX1reportW14'] ?? 0) + (float)($d2['fyp2EX1demoW7'] ?? 0) + (float)($d2['fyp2EX1demoW14'] ?? 0) + (float)($d2['fyp2EX1presentW7'] ?? 0) + (float)($d2['fyp2EX1presentW14'] ?? 0) + (float)($d2['fyp2EX2reportW14'] ?? 0) + (float)($d2['fyp2EX2demoW7'] ?? 0) + (float)($d2['fyp2EX2demoW14'] ?? 0) + (float)($d2['fyp2EX2presentW7'] ?? 0) + (float)($d2['fyp2EX2presentW14'] ?? 0);
 	echo 
 	"{$fyp2total} %
 	</td>

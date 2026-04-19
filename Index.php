@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.00, minimum-scale=1.00, maximum-scale=1.00, user-scalable=no">
 	<link rel="icon" href="img/fci.png">
 </head>
@@ -21,10 +22,9 @@
 
 		</div>
 	</div>
+	<!--righ bar close-->
+	<!--		include footer.php-->
+	<?php include 'includes/footer.php'; ?>
 </body>
-<!--righ bar close-->
-<!--		include footer.php-->
-<?php include 'includes/footer.php';?>
-
 
 </html>

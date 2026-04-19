@@ -1,64 +1,67 @@
 <?php include_once 'includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
-$PostID = $_GET['id'];
-$msg = "";
+error_reporting(E_ALL & ~E_NOTICE);
 
-$sql = mysqli_query($conn,"Select * from svproject where id = '$PostID'");
-$row = mysqli_fetch_array($sql);
+$PostID = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$msg = '';
+$project = null;
 
-		if(isset($_POST['login'])){
-			$user = $_POST['matric'];
-			$pass = $_POST['psw'];
-			$query = 
-		"SELECT * 
-		FROM users 
-		LEFT JOIN student ON student.studID = users.iduser 
-		LEFT JOIN lecturer ON lecturer.lectID = users.iduser 
-		WHERE users.iduser = '$user' 
-		AND users.password= '$pass' ";
-	
-	$result = mysqli_query($conn,$query);
-	if(mysqli_num_rows($result) > 0)
-	{
-		while ($row = mysqli_fetch_assoc($result))
-		{
-			$_SESSION['user'] = $row["iduser"];
-			$_SESSION['role'] = $row["role"];
-			$_SESSION['studName'] = $row["studName"];
-			$_SESSION['studDP'] = $row["studPhoto"];
-			 
-			 if($row['role'] == "student")
-			{
-				$PostID = $_GET['id'];
-				 $_SESSION['PostID'] = $PostID ;
-				header('location:Student/Student.php?view=svProject');
-			}
-			else if($row['role'] == 'lecturer' || $row['role'] == 'admin')
-			{
-					
-				$msg = "Your are not a student! Please login here";
-				$_SESSION['msg'] = $msg;
-				header('location:Index.php');
-			}
-			else{
-				echo "Incorrect Matric or Password!";
-			}
-			}
+if ($PostID > 0) {
+	$projRes = mysqli_query($conn, 'SELECT * FROM svproject WHERE id = ' . $PostID);
+	if ($projRes) {
+		$project = mysqli_fetch_assoc($projRes);
+	}
+}
+
+if (isset($_POST['login']) && $project) {
+	$user = isset($_POST['matric']) ? trim((string) $_POST['matric']) : '';
+	$pass = isset($_POST['psw']) ? (string) $_POST['psw'] : '';
+
+	$user_esc = mysqli_real_escape_string($conn, $user);
+	$pass_esc = mysqli_real_escape_string($conn, $pass);
+
+	$query =
+		"SELECT users.iduser, users.role, student.studName, student.studPhoto
+		FROM users
+		LEFT JOIN student ON student.studID = users.iduser
+		LEFT JOIN lecturer ON lecturer.lectID = users.iduser
+		WHERE users.iduser = '{$user_esc}' AND users.password = '{$pass_esc}'
+		LIMIT 1";
+
+	$result = mysqli_query($conn, $query);
+	if ($result && mysqli_num_rows($result) > 0) {
+		$loginRow = mysqli_fetch_assoc($result);
+		$_SESSION['user'] = $loginRow['iduser'];
+		$_SESSION['role'] = $loginRow['role'];
+		$_SESSION['studName'] = $loginRow['studName'];
+		$_SESSION['studDP'] = $loginRow['studPhoto'];
+
+		if ($loginRow['role'] === 'student') {
+			$_SESSION['PostID'] = (string) $PostID;
+			header('location:Student/Student.php?view=svProject');
+			exit;
 		}
-			else
-			{
-		$msg = "Incorrect Matric or Password !";
+		if ($loginRow['role'] === 'lecturer' || $loginRow['role'] === 'admin') {
+			$msg = 'Your are not a student! Please login here';
+			$_SESSION['msg'] = $msg;
+			header('location:Index.php');
+			exit;
 		}
-			}
-	?>
+		$msg = 'Incorrect Matric or Password!';
+	} else {
+		$msg = 'Incorrect Matric or Password !';
+	}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<link rel="icon" href="img/fci.png">
 	<style>
-		
+
 
 		.main {
 			margin: 0 auto;
@@ -186,41 +189,45 @@ $row = mysqli_fetch_array($sql);
 	<div class="main">
 		<label>Project Application</label>
 		<hr>
-		<?php if($msg !== ""){ ?>
+		<?php if ($msg !== '') { ?>
 		<div class="alert">
-			<?php echo $msg ?>
+			<?php echo htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') ?>
 		</div>
-		<?php }
-		else{
-			
-		}?>
+		<?php } ?>
+		<?php if (!$project) { ?>
+		<p>Project not found.</p>
+		<button type="button" onclick="window.location.href='Index.php'">BACK</button>
+		<?php } else { ?>
+		<?php
+			$lectid = $project['svid'];
+			$lect_esc = mysqli_real_escape_string($conn, (string) $lectid);
+			$check = mysqli_query($conn, "SELECT lectName FROM lecturer WHERE lectID = '{$lect_esc}' LIMIT 1");
+			$d = mysqli_fetch_assoc($check);
+			if (!$d) {
+				$d = ['lectName' => ''];
+			}
+		?>
 		<div class="viewP">
 			<table>
-				<?php 
-	$lectid = $row['svid'];
-	$check = mysqli_query($conn,"Select lectName from lecturer where lectID = '$lectid'");
-				$d = mysqli_fetch_array($check);
-	
-				?>
 				<tr>
 					<th>By</th>
-					<td><?php echo $d['lectName'] ?></td>
+					<td><?php echo htmlspecialchars($d['lectName'], ENT_QUOTES, 'UTF-8'); ?></td>
 				</tr>
 				<tr>
 					<th>Project Title</th>
-					<td><?php echo $row['title'] ?></td>
+					<td><?php echo htmlspecialchars((string) $project['title'], ENT_QUOTES, 'UTF-8'); ?></td>
 				</tr>
 				<tr>
 					<th>Description</th>
-					<td><?php echo nl2br($row['description']) ?></td>
+					<td><?php echo nl2br(htmlspecialchars((string) $project['description'], ENT_QUOTES, 'UTF-8')); ?></td>
 				</tr>
 				<tr>
 					<th>Type</th>
-					<td><?php echo nl2br($row['type']) ?></td>
+					<td><?php echo nl2br(htmlspecialchars((string) $project['type'], ENT_QUOTES, 'UTF-8')); ?></td>
 				</tr>
 				<tr>
 					<th>Requirement</th>
-					<td><?php echo nl2br($row['requirement']) ?></td>
+					<td><?php echo nl2br(htmlspecialchars((string) $project['requirement'], ENT_QUOTES, 'UTF-8')); ?></td>
 				</tr>
 			</table>
 
@@ -228,26 +235,25 @@ $row = mysqli_fetch_array($sql);
 
 		<hr>
 
-		<form method="post">
-			<button onclick="window.location.href='Index.php'">BACK</button>
+		<button type="button" onclick="window.location.href='Index.php'">BACK</button>
 
-			<button class="open-button" onclick="openForm()">Apply</button>
+		<button type="button" class="open-button" onclick="openForm()">Apply</button>
 
-			<div class="form-popup" id="myForm">
-				<form method="post">
-					<h4>Login</h4>
-					
-					<label id="b"><b>Matric Number</b></label><br>
-					<input type="text" placeholder="Matric Number " name="matric" required><br>
+		<div class="form-popup" id="myForm">
+			<form method="post">
+				<h4>Login</h4>
 
-					<label id="b"><b>Password</b></label><br>
-					<input type="password" placeholder="Enter Password" name="psw" required><br>
+				<label id="b"><b>Matric Number</b></label><br>
+				<input type="text" placeholder="Matric Number " name="matric" required><br>
 
-					<button type="submit" id="btnpop" name="login">Login</button>
-					<button type="button" id="btnpop" onclick="closeForm()">Close</button>
-				</form>
-			</div>
-		</form>
+				<label id="b"><b>Password</b></label><br>
+				<input type="password" placeholder="Enter Password" name="psw" required><br>
+
+				<button type="submit" id="btnpop" name="login">Login</button>
+				<button type="button" id="btnpop" onclick="closeForm()">Close</button>
+			</form>
+		</div>
+		<?php } ?>
 	</div>
 	<?php include_once 'includes/footer.php' ?>
 </body>

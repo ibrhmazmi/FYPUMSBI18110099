@@ -1,9 +1,12 @@
 <?php
 include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE); 
-$id = $_GET['id'];
-$sql = mysqli_query($conn,"SELECT * from logbook where logID ='$id'");
-	$d = mysqli_fetch_array($sql);
+error_reporting(E_ALL & ~E_NOTICE); 
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+if ($id <= 0) {
+	exit('Invalid request');
+}
+$sql = mysqli_query($conn, 'SELECT * FROM logbook WHERE logID = ' . $id);
+	$d = mysqli_fetch_assoc($sql);
 $Pid = $d['Pid'];
 if(isset($_POST['confirm'])){
 	
@@ -12,7 +15,7 @@ if(isset($_POST['confirm'])){
 	
 	$sql = mysqli_query($conn,"UPDATE logbook 
 	SET  svComment ='$komen', status = '$stat'
-	where logID='$id'");
+	WHERE logID = " . $id);
 	
 	if($sql)
     {

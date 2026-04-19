@@ -5,7 +5,7 @@ $foot = mysqli_query($conn,$sql);
 if (! $foot){
 	die ('Could not get Data:'. mysqli_error($conn));
 }
-$row = mysqli_fetch_array($foot);
+$row = mysqli_fetch_assoc($foot);
 
 
 

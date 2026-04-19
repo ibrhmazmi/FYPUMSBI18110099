@@ -19,7 +19,7 @@
 			
 		$result = mysqli_query($conn, "SELECT * FROM guide ORDER by id  desc");
 				
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = mysqli_fetch_assoc($result)) {
      $filedll = $row['file'];
 		$filedir = "Admin/upload/file";
 		 

@@ -1,8 +1,8 @@
 <?php 
 include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 $sql = mysqli_query($conn,"Select * from session");
-$row = mysqli_fetch_array($sql);
+$row = mysqli_fetch_assoc($sql);
 $ses = $row['type'];
 
 $setYear = 2019;
@@ -53,9 +53,9 @@ $CurrentYear = date('Y');
 			</div>
 			<hr>
 			<?php 
-			$fyp1 = $_POST['FYP_1'];
-			$fyp2 = $_POST['FYP_2'];
-			$year = $_POST['year'];
+			$fyp1 = $_POST['FYP_1'] ?? '';
+			$fyp2 = $_POST['FYP_2'] ?? '';
+			$year = $_POST['year'] ?? '';
 			
 			
 			

@@ -14,7 +14,7 @@ WHERE student.studID = '$id' ");
 if(!$sql){
 	die ('Could Not Fetch Data'.mysqli_error());
 }
-$data = mysqli_fetch_array($sql);
+$data = mysqli_fetch_assoc($sql);
 
 if(isset($_POST['save'])){
 	$id = $_SESSION['user'];
@@ -132,7 +132,7 @@ if(isset($_POST['save'])){
 					$st2 = $data['stud2'];
 					$st3 = $data['stud3'];
 					$g = mysqli_query($conn,"select studName from student where studID = '$st1'");
-					$d = mysqli_fetch_array($g);
+					$d = mysqli_fetch_assoc($g);
 					?>
 					<tr>
 						<th>student 1 :</th>
@@ -141,7 +141,7 @@ if(isset($_POST['save'])){
 					<?php 
 					if(!empty($st2)){
 						$g = mysqli_query($conn,"select studName from student where studID = '$st2'");
-					$d = mysqli_fetch_array($g);
+					$d = mysqli_fetch_assoc($g);
 						echo "<tr>
 						<th>student 2 :</th>
 						<td>{$d['studName']} ({$data['stud2']}) </td>
@@ -151,7 +151,7 @@ if(isset($_POST['save'])){
 					}
 					if(!empty($st3)){
 						$g = mysqli_query($conn,"select studName from student where studID = '$st3'");
-					$d = mysqli_fetch_array($g);
+					$d = mysqli_fetch_assoc($g);
 						echo "<tr>
 						<th>student 3 :</th>
 						<td>{$d['studName']} ({$data['stud3']}) </td>

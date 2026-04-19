@@ -1,22 +1,30 @@
 <?php 
 include_once "../includes/config.php";
-error_reporting(E_ALL ^ E_NOTICE); 
+error_reporting(E_ALL & ~E_NOTICE); 
 
-$id = $_GET['id'];
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+if ($id <= 0) {
+	header('Location: Admin.php?view=projectList');
+	exit;
+}
 
-$sql = mysqli_query($conn,"select * from project where Pid = '$id'");
-$row = mysqli_fetch_array($sql);
+$sql = mysqli_query($conn, 'SELECT * FROM project WHERE Pid = ' . $id);
+$row = mysqli_fetch_assoc($sql);
+if (!$row) {
+	header('Location: Admin.php?view=projectList');
+	exit;
+}
 
 
 
 if(isset($_POST['assign'])){
-$sv = $_POST['sv'];
-$ex1 = $_POST['exid1'];
-$ex2 = $_POST['exid2'];
+$sv = mysqli_real_escape_string($conn, (string) $_POST['sv']);
+$ex1 = mysqli_real_escape_string($conn, (string) $_POST['exid1']);
+$ex2 = mysqli_real_escape_string($conn, (string) $_POST['exid2']);
 	
 $sql = mysqli_query($conn,"
 UPDATE project SET svid ='$sv', exid1 = '$ex1', exid2 = '$ex2'
-WHERE Pid = '$id'");
+WHERE Pid = " . $id);
 	  if($sql)
     {
         mysqli_close($conn); // Close connection
@@ -107,13 +115,13 @@ WHERE Pid = '$id'");
 			$stid3 = $row['stud3'];
 			
 			$c = mysqli_query($conn,"select studName from student where studId ='$stid'");
-			$d = mysqli_fetch_array($c);
+			$d = mysqli_fetch_assoc($c);
 			
 			echo "1. ".$d['studName']."<br>".$row['stud1']; ?>
 						<?php 
 			if (!empty($row['stud2'])){
 				$c = mysqli_query($conn,"select studName from student where studId ='$stid2'");
-			$d = mysqli_fetch_array($c);
+			$d = mysqli_fetch_assoc($c);
 				
 				echo "<br>2. ".$d['studName']."<br>".$row['stud2'];
 			}else{
@@ -121,7 +129,7 @@ WHERE Pid = '$id'");
 			}
 			if (!empty($row['stud3'])){
 				$c = mysqli_query($conn,"select studName from student where studId ='$stid3'");
-			$d = mysqli_fetch_array($c);
+			$d = mysqli_fetch_assoc($c);
 				
 				echo "<br>3. ".$d['studName']."<br>".$row['stud3'];
 			}else{
@@ -146,7 +154,7 @@ WHERE Pid = '$id'");
 				$exid2 = $row['exid2'];
 				if (!empty($svid)){
 				$sql = mysqli_query($conn,"SELECT lectName FROM lecturer where lectID = '$svid'");
-				$sname = mysqli_fetch_array($sql);
+				$sname = mysqli_fetch_assoc($sql);
 				echo $sname['lectName'];
 					echo "<br>".$row['svid'];
 				echo "<select name=\"sv\">
@@ -155,7 +163,7 @@ WHERE Pid = '$id'");
 				<option value=\"\">REMOVE</option>";
 					
 				$sql = mysqli_query($conn,"select * FROM lecturer where lectID != '$svid' and lectID != '$exid1' and lectID != '$exid2'and workload_status != 'Full'");
-		while($data = mysqli_fetch_array($sql)){
+		while($data = mysqli_fetch_assoc($sql)){
 		$id = $data['lectID'];
 			//check total supervise
 			$svstu = mysqli_query($conn,"SELECT * FROM `project` 
@@ -171,7 +179,7 @@ WHERE Pid = '$id'");
 			$total = $kira + $kira2;
 			
 			$check = mysqli_query($conn,"Select * from lecturer where lectID = '$id' ");
-			$lihat = mysqli_fetch_array($check);
+			$lihat = mysqli_fetch_assoc($check);
 		echo 
 		"
 		<option value=".$data['lectID'].">".$data['lectName']." (".$total."/".$lihat['workload'].")</option>";
@@ -189,7 +197,7 @@ WHERE Pid = '$id'");
 				<option value=\"{$svid}\">SELECT SUPERVISOR
 				</option><option value=\"\">REMOVE</option>";
 				$sql = mysqli_query($conn,"select * FROM lecturer where lectID != '$svid' and lectID != '$exid1' and lectID != '$exid2'and workload_status != 'Full'");
-		while($data = mysqli_fetch_array($sql)){
+		while($data = mysqli_fetch_assoc($sql)){
 				$id = $data['lectID'];
 			//check total supervise
 			$svstu = mysqli_query($conn,"SELECT * FROM `project` 
@@ -205,7 +213,7 @@ WHERE Pid = '$id'");
 			$total = $kira + $kira2;
 			
 			$check = mysqli_query($conn,"Select * from lecturer where lectID = '$id' ");
-			$lihat = mysqli_fetch_array($check);
+			$lihat = mysqli_fetch_assoc($check);
 		echo 
 		"
 		<option value=".$data['lectID'].">".$data['lectName']." (".$total."/".$lihat['workload'].")</option>";
@@ -227,7 +235,7 @@ WHERE Pid = '$id'");
 				$exid2 = $row['exid2'];
 				if (!empty($exid1)){
 				$sql = mysqli_query($conn,"SELECT lectName FROM lecturer where lectID = '$exid1'");
-				$sname = mysqli_fetch_array($sql);
+				$sname = mysqli_fetch_assoc($sql);
 				echo $sname['lectName'];
 					echo "<br>".$row['exid1'];
 					
@@ -235,7 +243,7 @@ WHERE Pid = '$id'");
 				<option value=\"{$exid1}\">SELECT EXAMINER 1
 				</option><option value=\"\">REMOVE</option>";
 				$sql = mysqli_query($conn,"select * FROM lecturer where lectID != '$svid' and lectID != '$exid1' and lectID != '$exid2' and workload_status != 'Full'");
-		while($data = mysqli_fetch_array($sql)){
+		while($data = mysqli_fetch_assoc($sql)){
 		$id = $data['lectID'];
 			//check total supervise
 			$svstu = mysqli_query($conn,"SELECT * FROM `project` 
@@ -251,7 +259,7 @@ WHERE Pid = '$id'");
 			$total = $kira + $kira2;
 			
 			$check = mysqli_query($conn,"Select * from lecturer where lectID = '$id' ");
-			$lihat = mysqli_fetch_array($check);
+			$lihat = mysqli_fetch_assoc($check);
 		echo 
 		"
 		<option value=".$data['lectID'].">".$data['lectName']." (".$total."/".$lihat['workload'].")</option>";
@@ -272,7 +280,7 @@ WHERE Pid = '$id'");
 				<option value=\"{$exid1}\">SELECT EXAMINER 1
 				</option><option value=\"\">REMOVE</option>";
 				$sql = mysqli_query($conn,"select * FROM lecturer where lectID != '$svid' and lectID != '$exid1' and lectID != '$exid2' and workload_status != 'Full'");
-		while($data = mysqli_fetch_array($sql)){
+		while($data = mysqli_fetch_assoc($sql)){
 		$id = $data['lectID'];
 			//check total supervise
 			$svstu = mysqli_query($conn,"SELECT * FROM `project` 
@@ -288,7 +296,7 @@ WHERE Pid = '$id'");
 			$total = $kira + $kira2;
 			
 			$check = mysqli_query($conn,"Select * from lecturer where lectID = '$id' ");
-			$lihat = mysqli_fetch_array($check);
+			$lihat = mysqli_fetch_assoc($check);
 		echo 
 		"
 		<option value=".$data['lectID'].">".$data['lectName']." (".$total."/".$lihat['workload'].")</option>";
@@ -310,7 +318,7 @@ WHERE Pid = '$id'");
 				$exid2 = $row['exid2'];
 				if (!empty($exid2)){
 				$sql = mysqli_query($conn,"SELECT lectName FROM lecturer where lectID = '$exid2'");
-				$sname = mysqli_fetch_array($sql);
+				$sname = mysqli_fetch_assoc($sql);
 				echo $sname['lectName'];
 					echo "<br>".$row['exid2'];
 					
@@ -318,7 +326,7 @@ WHERE Pid = '$id'");
 				<option value=\"{$exid2}\">SELECT EXAMINER 2
 				</option><option value=\"\">REMOVE</option>";
 				$sql = mysqli_query($conn,"select * FROM lecturer where lectID != '$svid' and lectID != '$exid1' and lectID != '$exid2'and workload_status != 'Full'");
-		while($data = mysqli_fetch_array($sql)){
+		while($data = mysqli_fetch_assoc($sql)){
 		$id = $data['lectID'];
 			//check total supervise
 			$svstu = mysqli_query($conn,"SELECT * FROM `project` 
@@ -334,7 +342,7 @@ WHERE Pid = '$id'");
 			$total = $kira + $kira2;
 			
 			$check = mysqli_query($conn,"Select * from lecturer where lectID = '$id' ");
-			$lihat = mysqli_fetch_array($check);
+			$lihat = mysqli_fetch_assoc($check);
 		echo 
 		"
 		<option value=".$data['lectID'].">".$data['lectName']." (".$total."/".$lihat['workload'].")</option>";
@@ -352,7 +360,7 @@ WHERE Pid = '$id'");
 				<option value=\"{$exid2}\">SELECT EXAMINER 2
 				</option><option value=\"\">REMOVE</option>";
 				$sql = mysqli_query($conn,"select * FROM lecturer where lectID != '$svid' and lectID != '$exid1' and lectID != '$exid2'and workload_status != 'Full'");
-		while($data = mysqli_fetch_array($sql)){
+		while($data = mysqli_fetch_assoc($sql)){
 	$id = $data['lectID'];
 			//check total supervise
 			$svstu = mysqli_query($conn,"SELECT * FROM `project` 
@@ -368,7 +376,7 @@ WHERE Pid = '$id'");
 			$total = $kira + $kira2;
 			
 			$check = mysqli_query($conn,"Select * from lecturer where lectID = '$id' ");
-			$lihat = mysqli_fetch_array($check);
+			$lihat = mysqli_fetch_assoc($check);
 		echo 
 		"
 		<option value=".$data['lectID'].">".$data['lectName']." (".$total."/".$lihat['workload'].")</option>";

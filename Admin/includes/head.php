@@ -1,6 +1,11 @@
 <?php
 include_once '../includes/config.php';
 
+$sType = htmlspecialchars((string) ($_SESSION['type'] ?? ''), ENT_QUOTES, 'UTF-8');
+$sYear = htmlspecialchars((string) ($_SESSION['year'] ?? ''), ENT_QUOTES, 'UTF-8');
+$sLectName = htmlspecialchars((string) ($_SESSION['lectName'] ?? ''), ENT_QUOTES, 'UTF-8');
+$sUser = htmlspecialchars((string) ($_SESSION['user'] ?? ''), ENT_QUOTES, 'UTF-8');
+
 if(isset($_POST['but_logout'])){
     session_destroy();
     header('Location:../Index.php');
@@ -21,8 +26,8 @@ if(isset($_POST['but_logout'])){
 
 		<div class="f-right">
 			<div class="u1">
-			<?php echo $_SESSION['type']." |  ".$_SESSION['year']." | " ?>
-				<?php echo $_SESSION['lectName']; ?>, <?php echo $_SESSION['user']; ?> |
+			<?php echo $sType." |  ".$sYear." | " ?>
+				<?php echo $sLectName; ?>, <?php echo $sUser; ?> |
 				
 			</div>
 			

@@ -1,7 +1,7 @@
 <?php
 include_once ('../includes/config.php');
 $msg = "";
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE);
 
 
 if(isset($_POST['addProject'])){
@@ -13,7 +13,7 @@ if(isset($_POST['addProject'])){
 	$stud3 = $_POST['stud3'];
 	$sv = $_POST['sv'];
 	
-	$proWord = $_FILES['propWord']['name'];
+	$proWord = (string) ($_FILES['propWord']['name'] ?? '');
 	$proWordTarget = "upload/student_file/proposal/".basename($proWord);
 	
 	
@@ -123,7 +123,7 @@ mysqli_close($conn);
 										<?php 
 									$svcheck = mysqli_query($conn,"SELECT lectName,lectID FROM lecturer");
 									
-									while ($svPick = mysqli_fetch_array($svcheck)){
+									while ($svPick = mysqli_fetch_assoc($svcheck)){
 										echo "<option value=\"{$svPick['lectID']}\">{$svPick['lectName']}</option>";
 									}
 									

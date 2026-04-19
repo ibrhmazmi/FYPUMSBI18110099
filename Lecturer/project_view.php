@@ -1,80 +1,85 @@
 <?php include_once '../includes/config.php';
-error_reporting(E_ALL ^ E_NOTICE);
-$pid = $_GET['id'];
-$selStud = $_POST['select'];
-$studentID = $_POST['studID'];
+error_reporting(E_ALL & ~E_NOTICE);
+$pid = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+if ($pid <= 0) {
+	exit('Invalid request');
+}
+$selStud = $_POST['select'] ?? '';
+$studentID = $_POST['studID'] ?? '';
 
 
 if(isset($_POST['select']))
 	{
-	$resetData = mysqli_query($conn,"Update application set status = 'Pending' where status = '$selStud'");
+	$selStudE = mysqli_real_escape_string($conn, (string) $selStud);
+	$studentIDE = mysqli_real_escape_string($conn, (string) $studentID);
+	$resetData = mysqli_query($conn,"UPDATE application SET status = 'Pending' WHERE status = '$selStudE'");
 	
-		$updata = mysqli_query($conn,"Update application set status = '$selStud' where studID = '$studentID'");
+		$updata = mysqli_query($conn,"UPDATE application SET status = '$selStudE' WHERE studID = '$studentIDE'");
 	
-	$sql = mysqli_query($conn,"Select * From svproject where id = '$pid' and stud1 = '$studentID' or stud2 = '$studentID' or stud3 ='$studentID'");
-	$row = mysqli_fetch_array($sql);
+	$sql = mysqli_query($conn,"SELECT * FROM svproject WHERE id = $pid AND (stud1 = '$studentIDE' OR stud2 = '$studentIDE' OR stud3 ='$studentIDE')");
+	$row = mysqli_fetch_assoc($sql);
 	$st1 = $row['stud1'];
 	$st2 = $row['stud2'];
 	$st3 = $row['stud3'];
 	
-	$selD = mysqli_query($conn,"Select * from application where studID = '$studentID' ");
-		$data = mysqli_fetch_array($selD);
+	$selD = mysqli_query($conn,"SELECT * FROM application WHERE studID = '$studentIDE' ");
+		$data = mysqli_fetch_assoc($selD);
 		$stat = $data['status'];
 	
 	
 			if($stat == "Student 1" && $st2 == $studentID)
 			{
-				$remove = mysqli_query($conn,"Update svproject set stud2 = null where id ='$pid' and stud1 ='$studentID' or stud2 ='$studentID' or stud3 ='$studentID' ");
-				$sql = mysqli_query($conn,"Update svproject set stud1 = '$studentID' where id ='$pid' ");
+				$remove = mysqli_query($conn,"Update svproject set stud2 = null WHERE id = $pid AND (stud1 ='$studentIDE' OR stud2 ='$studentIDE' OR stud3 ='$studentIDE') ");
+				$sql = mysqli_query($conn,"Update svproject set stud1 = '$studentIDE' WHERE id = $pid ");
 			}
 			else if($stat == "Student 1" && $st3 == $studentID)
 			{
-				$remove = mysqli_query($conn,"Update svproject set stud3 = null where id ='$pid' and stud1 ='$studentID' or stud2 ='$studentID' or stud3 ='$studentID' ");
-				$sql = mysqli_query($conn,"Update svproject set stud1 = '$studentID' where id ='$pid' ");
+				$remove = mysqli_query($conn,"Update svproject set stud3 = null WHERE id = $pid AND (stud1 ='$studentIDE' OR stud2 ='$studentIDE' OR stud3 ='$studentIDE') ");
+				$sql = mysqli_query($conn,"Update svproject set stud1 = '$studentIDE' WHERE id = $pid ");
 			}
 			else if($stat == "Student 1")
 			{
 				
-				$sql = mysqli_query($conn,"Update svproject set stud1 = '$studentID' where id ='$pid' ");
+				$sql = mysqli_query($conn,"Update svproject set stud1 = '$studentIDE' WHERE id = $pid ");
 			}
 			else if($stat == "Student 2" && $st1 == $studentID)
 			{
-				$remove = mysqli_query($conn,"Update svproject set stud1 = null where id ='$pid' and stud1 ='$studentID' or stud2 ='$studentID' or stud3 ='$studentID' ");
-				$sql = mysqli_query($conn,"Update svproject set stud2 = '$studentID' where id ='$pid' ");
+				$remove = mysqli_query($conn,"Update svproject set stud1 = null WHERE id = $pid AND (stud1 ='$studentIDE' OR stud2 ='$studentIDE' OR stud3 ='$studentIDE') ");
+				$sql = mysqli_query($conn,"Update svproject set stud2 = '$studentIDE' WHERE id = $pid ");
 			}
 			else if($stat == "Student 2" && $st3 == $studentID)
 			{
-				$remove = mysqli_query($conn,"Update svproject set stud3 = null where id ='$pid' and stud1 ='$studentID' or stud2 ='$studentID' or stud3 ='$studentID' ");
-				$sql = mysqli_query($conn,"Update svproject set stud2 = '$studentID' where id ='$pid' ");
+				$remove = mysqli_query($conn,"Update svproject set stud3 = null WHERE id = $pid AND (stud1 ='$studentIDE' OR stud2 ='$studentIDE' OR stud3 ='$studentIDE') ");
+				$sql = mysqli_query($conn,"Update svproject set stud2 = '$studentIDE' WHERE id = $pid ");
 			}
 			else if($stat == "Student 2")
 			{
 				
-				$sql = mysqli_query($conn,"Update svproject set stud2 = '$studentID' where id ='$pid' ");
+				$sql = mysqli_query($conn,"Update svproject set stud2 = '$studentIDE' WHERE id = $pid ");
 			}
 			else if($stat == "Student 3" && $st1 == $studentID)
 			{
-				$remove = mysqli_query($conn,"Update svproject set stud1 = null where id ='$pid' and stud1 ='$studentID' or stud2 ='$studentID' or stud3 ='$studentID' ");
-				$sql = mysqli_query($conn,"Update svproject set stud3 = '$studentID' where id ='$pid' ");
+				$remove = mysqli_query($conn,"Update svproject set stud1 = null WHERE id = $pid AND (stud1 ='$studentIDE' OR stud2 ='$studentIDE' OR stud3 ='$studentIDE') ");
+				$sql = mysqli_query($conn,"Update svproject set stud3 = '$studentIDE' WHERE id = $pid ");
 			}
 			else if($stat == "Student 3" && $st2 == $studentID)
 			{
-				$remove = mysqli_query($conn,"Update svproject set stud2 = null where id ='$pid' and stud1 ='$studentID' or stud2 ='$studentID' or stud3 ='$studentID' ");
-				$sql = mysqli_query($conn,"Update svproject set stud3 = '$studentID' where id ='$pid' ");
+				$remove = mysqli_query($conn,"Update svproject set stud2 = null WHERE id = $pid AND (stud1 ='$studentIDE' OR stud2 ='$studentIDE' OR stud3 ='$studentIDE') ");
+				$sql = mysqli_query($conn,"Update svproject set stud3 = '$studentIDE' WHERE id = $pid ");
 			}
 			else if($stat == "Student 3")
 			{
 				
-				$sql = mysqli_query($conn,"Update svproject set stud3 = '$studentID' where id ='$pid' ");
+				$sql = mysqli_query($conn,"Update svproject set stud3 = '$studentIDE' WHERE id = $pid ");
 			}
 			else if($stat == "Pending" && $st1 == $studentID){
-				$remove1 = mysqli_query($conn,"Update svproject set stud1 = null where id ='$pid' and stud1 ='$studentID' or stud2 ='$studentID' or stud3 ='$studentID' ");
+				$remove1 = mysqli_query($conn,"Update svproject set stud1 = null WHERE id = $pid AND (stud1 ='$studentIDE' OR stud2 ='$studentIDE' OR stud3 ='$studentIDE') ");
 			}
 			else if($stat == "Pending" && $st2 == $studentID){
-				$remove2 = mysqli_query($conn,"Update svproject set stud2 = null where id ='$pid' and stud1 ='$studentID' or stud2 ='$studentID' or stud3 ='$studentID' ");
+				$remove2 = mysqli_query($conn,"Update svproject set stud2 = null WHERE id = $pid AND (stud1 ='$studentIDE' OR stud2 ='$studentIDE' OR stud3 ='$studentIDE') ");
 			}
 			else if($stat == "Pending" && $st3 == $studentID){
-				$remove3 = mysqli_query($conn,"Update svproject set stud3 = null where id ='$pid' and stud1 ='$studentID' or stud2 ='$studentID' or stud3 ='$studentID' ");
+				$remove3 = mysqli_query($conn,"Update svproject set stud3 = null WHERE id = $pid AND (stud1 ='$studentIDE' OR stud2 ='$studentIDE' OR stud3 ='$studentIDE') ");
 			}
 			else
 			{
@@ -84,8 +89,8 @@ if(isset($_POST['select']))
 	}
 
 if(isset($_POST['final'])){
-$check = mysqli_query($conn,"Select * from svproject  where id = '$pid' ")	;
-	$d = mysqli_fetch_array($check);
+$check = mysqli_query($conn,"SELECT * FROM svproject WHERE id = " . $pid);
+	$d = mysqli_fetch_assoc($check);
 
 $title	= $d['title'];
 $svid		= $_SESSION['user'];
@@ -93,16 +98,21 @@ $stud1	= $d['stud1'];
 $stud2	= $d['stud2'];
 $stud3	= $d['stud3'];
 	
-	$sql = mysqli_query($conn,"INSERT into project (ProjectTitle, svid, stud1, stud2, stud3) VALUES ('$title','$svid','$stud1','$stud2','$stud3')");
+	$tE = mysqli_real_escape_string($conn, (string) $title);
+	$svE = mysqli_real_escape_string($conn, (string) $svid);
+	$s1E = mysqli_real_escape_string($conn, (string) $stud1);
+	$s2E = mysqli_real_escape_string($conn, (string) $stud2);
+	$s3E = mysqli_real_escape_string($conn, (string) $stud3);
+	$sql = mysqli_query($conn,"INSERT INTO project (ProjectTitle, svid, stud1, stud2, stud3) VALUES ('$tE','$svE','$s1E','$s2E','$s3E')");
 	
 	
 	
 	if($sql){
-		$changeStat = mysqli_query($conn,"Update svproject set status = 'Done' where id = '$pid'");
+		$changeStat = mysqli_query($conn,"UPDATE svproject SET status = 'Done' WHERE id = " . $pid);
 			if($changeStat){
-			$del1 = mysqli_query($conn,"Delete from application where svProjectID !='$pid' AND studID ='$stud1'");
-			$del2 = mysqli_query($conn,"Delete from application where svProjectID !='$pid' AND studID ='$stud2'");
-			$del3 = mysqli_query($conn,"Delete from application where svProjectID !='$pid' AND studID ='$stud3'");
+			$del1 = mysqli_query($conn,"DELETE FROM application WHERE svProjectID != " . $pid . " AND studID ='".mysqli_real_escape_string($conn, (string)$stud1)."'");
+			$del2 = mysqli_query($conn,"DELETE FROM application WHERE svProjectID != " . $pid . " AND studID ='".mysqli_real_escape_string($conn, (string)$stud2)."'");
+			$del3 = mysqli_query($conn,"DELETE FROM application WHERE svProjectID != " . $pid . " AND studID ='".mysqli_real_escape_string($conn, (string)$stud3)."'");
 			header('location:lecturer.php?view=svproject');
 			}else{
 				echo "cannot delete remaining application of the student";
@@ -212,8 +222,8 @@ $stud3	= $d['stud3'];
 		<div class="contC">
 			<table>
 				<?php 
-			$pick = mysqli_query($conn,"Select * from svproject where id = '$pid'");
-			$a = mysqli_fetch_array($pick);
+			$pick = mysqli_query($conn,"SELECT * FROM svproject WHERE id = " . $pid);
+			$a = mysqli_fetch_assoc($pick);
 			?>
 				<tr>
 					<th>Title</th>
@@ -238,9 +248,9 @@ $stud3	= $d['stud3'];
 						$stud1 = mysqli_query($conn,"Select studName from student where studID = '$s1'");
 						$stud2 = mysqli_query($conn,"Select studName from student where studID = '$s2'");
 						$stud3 = mysqli_query($conn,"Select studName from student where studID = '$s3'");
-						$ss1 = mysqli_fetch_array($stud1);
-						$ss2 = mysqli_fetch_array($stud2);
-						$ss3 = mysqli_fetch_array($stud3);
+						$ss1 = mysqli_fetch_assoc($stud1);
+						$ss2 = mysqli_fetch_assoc($stud2);
+						$ss3 = mysqli_fetch_assoc($stud3);
 				
 				?>
 				<tr>
@@ -292,7 +302,7 @@ $stud3	= $d['stud3'];
 					<th>Status</th>
 				</tr>
 				<?php  
-				$sql = mysqli_query($conn,"Select * from application  where svProjectID = '$pid' ORDER BY 
+				$sql = mysqli_query($conn,"SELECT * FROM application WHERE svProjectID = " . $pid . " ORDER BY 
   CASE
     WHEN status LIKE '%student 1%'  THEN 1
     WHEN status LIKE '%student 2%'  THEN 2
@@ -301,11 +311,12 @@ $stud3	= $d['stud3'];
 				$check = mysqli_num_rows($sql);
 				$x = 0 ;
 if($check >0){
-				while($row = mysqli_fetch_array($sql)){
+				while($row = mysqli_fetch_assoc($sql)){
 					$studID = $row['studID'];
 					$stat = $row['status'];
-					$sql2 = mysqli_query($conn,"Select * from student where studID = '$studID' ");
-					$data = mysqli_fetch_array($sql2);
+					$studIDEsc = mysqli_real_escape_string($conn, (string) $studID);
+					$sql2 = mysqli_query($conn,"SELECT * FROM student WHERE studID = '$studIDEsc' ");
+					$data = mysqli_fetch_assoc($sql2);
 					echo "<tr> 
 					<th>".++$x."</th>
 					<td>".$data['programme']."</td>
