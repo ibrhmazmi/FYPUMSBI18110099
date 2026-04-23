@@ -3,26 +3,32 @@ include_once "../includes/config.php";
 
 if (isset($_POST['submit']))
 {
-	$name = $_POST['name'];
-	$matric = $_POST['matric'];
-	$courseSel = $_POST['courseSel'];
-	$email = $_POST['email'];
-	$phone = $_POST['phone'];
-	
-	$sel = "INSERT INTO users (iduser,role,password) 
-	VALUES
-	('$matric','student','$matric')";
-	
-	$sel2 = "INSERT INTO student (studID,studName,studEmail,studPhone,programme) VALUES ('$matric','$name','$email','$phone','$courseSel')";
-	
-	if ($conn->query($sel) === TRUE && $conn->query($sel2) === TRUE ) 
-			{
-				header('location:Admin.php?view=student');
-			} 
-			else 
-			{
-				echo "<br><a style='color:red; background-color: lightblue; padding:5px;margin-left:100px;'> Data Existed !</a> ";
-			}
+	$name = mysqli_real_escape_string($conn, (string) $_POST['name']);
+	$matric = mysqli_real_escape_string($conn, (string) $_POST['matric']);
+	$courseSel = mysqli_real_escape_string($conn, trim((string) $_POST['courseSel']));
+	$email = mysqli_real_escape_string($conn, (string) $_POST['email']);
+	$phone = mysqli_real_escape_string($conn, (string) $_POST['phone']);
+	$defaultCode = 0;
+
+	mysqli_begin_transaction($conn);
+	try {
+		$sel = "INSERT INTO users (iduser,role,password) VALUES ('$matric','student','$matric')";
+		$sel2 = "INSERT INTO student (studID,studName,studEmail,studPhone,programme,code) VALUES ('$matric','$name','$email','$phone','$courseSel','$defaultCode')";
+
+		if (!$conn->query($sel)) {
+			throw new Exception($conn->error);
+		}
+		if (!$conn->query($sel2)) {
+			throw new Exception($conn->error);
+		}
+
+		mysqli_commit($conn);
+		header('location:Admin.php?view=student');
+		exit;
+	} catch (Throwable $e) {
+		mysqli_rollback($conn);
+		echo "<br><a style='color:red; background-color: lightblue; padding:5px;margin-left:100px;'> Insert failed: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</a> ";
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -54,7 +60,7 @@ if (isset($_POST['submit']))
 								
 							if(!$sql)
 							{
-							die ('Could not get Data:'. mysqli_error());
+							die ('Could not get Data:'. mysqli_error($conn));
 							}
 								while ($row = mysqli_fetch_assoc($sql))
 								{

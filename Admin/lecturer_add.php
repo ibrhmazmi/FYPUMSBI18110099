@@ -59,40 +59,34 @@ error_reporting(E_ALL & ~E_NOTICE);
 		if (isset($_POST['submit']))
 		{	
 		
-		$matric = $_POST['matNum'];
-		$name = $_POST['name'];
-		$email = $_POST['email'];
-		$Phone = $_POST['conNum'];
-		$role = $_POST['role'];
-		$code = $_POST['kod'];
-		$workload = $_POST['workload'];
+		$matric = mysqli_real_escape_string($conn, (string) $_POST['matNum']);
+		$name = mysqli_real_escape_string($conn, (string) $_POST['name']);
+		$email = mysqli_real_escape_string($conn, (string) $_POST['email']);
+		$Phone = mysqli_real_escape_string($conn, (string) $_POST['conNum']);
+		$role = mysqli_real_escape_string($conn, (string) $_POST['role']);
+		$code = mysqli_real_escape_string($conn, trim((string) $_POST['kod']));
+		$workload = (int) $_POST['workload'];
+		$defaultCode = 0;
 			
-		$sql = "INSERT INTO users (iduser,role,password) VALUES('$matric','$role','$matric');";
-
-		$sql1 = "INSERT INTO lecturer(lectID,lectName,lectEmail,lectPhone, programme,workload) VALUES ('$matric','$name','$email','$Phone','$code','$workload')";
+		$sql = "INSERT INTO users (iduser,role,password) VALUES('$matric','$role','$matric')";
+		$sql1 = "INSERT INTO lecturer(lectID,lectName,lectEmail,lectPhone, programme,workload,code) VALUES ('$matric','$name','$email','$Phone','$code','$workload','$defaultCode')";
 	
-
-		if ($conn->query($sql) === TRUE && $conn->query($sql1) === TRUE ) 
-			{
-				header('location:Admin.php?view=lecturer');
-			} 
-			else if ($conn->query($sql) === TRUE && $conn->query($sql1) === FALSE ){
-				echo "<br><a style='color:red; background-color: lightblue; padding:5px;margin-left:100px;'> 1 !</a> ";
-				exit;
+		mysqli_begin_transaction($conn);
+		try {
+			if (!$conn->query($sql)) {
+				throw new Exception($conn->error);
 			}
-			else if ($conn->query($sql) === FALSE && $conn->query($sql1) === TRUE ){
-				echo "<br><a style='color:red; background-color: lightblue; padding:5px;margin-left:100px;'> 2 !</a> ";
-				exit;
+			if (!$conn->query($sql1)) {
+				throw new Exception($conn->error);
 			}
-			else if ($conn->query($sql) === FALSE && $conn->query($sql1) === FALSE ){
-				echo "<br><a style='color:red; background-color: lightblue; padding:5px;margin-left:100px;'> 3 !</a> ";
-				exit;
-			}
-			else 
-			{
-				echo "<br><a style='color:red; background-color: lightblue; padding:5px;margin-left:100px;'> Data Existed !</a> ";
-				exit;
-			}
+			mysqli_commit($conn);
+			header('location:Admin.php?view=lecturer');
+			exit;
+		} catch (Throwable $e) {
+			mysqli_rollback($conn);
+			echo "<br><a style='color:red; background-color: lightblue; padding:5px;margin-left:100px;'> Insert failed: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</a> ";
+			exit;
+		}
 			}
 
 		?>

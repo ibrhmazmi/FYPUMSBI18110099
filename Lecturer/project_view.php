@@ -103,7 +103,9 @@ $stud3	= $d['stud3'];
 	$s1E = mysqli_real_escape_string($conn, (string) $stud1);
 	$s2E = mysqli_real_escape_string($conn, (string) $stud2);
 	$s3E = mysqli_real_escape_string($conn, (string) $stud3);
-	$sql = mysqli_query($conn,"INSERT INTO project (ProjectTitle, svid, stud1, stud2, stud3) VALUES ('$tE','$svE','$s1E','$s2E','$s3E')");
+	$poster = '';
+	$sourceFile = '';
+	$sql = mysqli_query($conn,"INSERT INTO project (ProjectTitle, svid, stud1, stud2, stud3, poster, source_file) VALUES ('$tE','$svE','$s1E','$s2E','$s3E','$poster','$sourceFile')");
 	
 	
 	

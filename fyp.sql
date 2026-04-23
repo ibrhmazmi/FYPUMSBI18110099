@@ -148,7 +148,7 @@ CREATE TABLE `lecturer` (
   `lectPhone` varchar(100) DEFAULT NULL,
   `workload` int(20) DEFAULT 5,
   `workload_status` varchar(20) NOT NULL DEFAULT 'Ongoing',
-  `code` mediumint(50) NOT NULL
+  `code` mediumint(50) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -393,7 +393,7 @@ CREATE TABLE `student` (
   `studP1score` float DEFAULT 0,
   `studP2score` float DEFAULT 0,
   `studPhoto` varchar(200) DEFAULT NULL,
-  `code` mediumint(50) NOT NULL
+  `code` mediumint(50) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
